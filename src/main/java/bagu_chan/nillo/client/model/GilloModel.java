@@ -58,7 +58,6 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.head.xRot = headPitch * ((float)Math.PI / 180F);
 		this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
-		this.applyStatic(NilloAnimations.SCALED);
 		if(this.young){
 			this.applyStatic(NilloAnimations.BABY);
 		}
