@@ -1,0 +1,11 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#nillo:nillo_spawnable",
+  "spawners":
+  {
+    "type": "nillo:gillo",
+    "weight": 2,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}
