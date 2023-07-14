@@ -62,7 +62,7 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 			this.applyStatic(NilloAnimations.BABY);
 		}
 		this.animateWalk(NilloAnimations.WALK, limbSwing, limbSwingAmount, 1.0F, 1.5F);
-		this.animate(entity.attackAnimationState, NilloAnimations.ATTACK, ageInTicks, entity.isAggressive() ? 1.25F: 1F);
+        this.animate(entity.attackAnimationState, NilloAnimations.ATTACK, ageInTicks, entity.isAggressive() ? 1.2F : 1F);
 	}
 
 	@Override

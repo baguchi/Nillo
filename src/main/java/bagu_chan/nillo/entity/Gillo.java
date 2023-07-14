@@ -2,9 +2,6 @@ package bagu_chan.nillo.entity;
 
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.register.ModEntities;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -13,8 +10,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.level.Level;
@@ -61,6 +56,6 @@ public class Gillo extends Nillo{
     }
     @Override
     public int getAttackAnimationLength() {
-        return isAggressive() ? (int) (super.getAttackAnimationLength() * 0.75F) : super.getAttackAnimationLength();
+        return isAggressive() ? (int) (super.getAttackAnimationLength() * 0.8F) : super.getAttackAnimationLength();
     }
 }

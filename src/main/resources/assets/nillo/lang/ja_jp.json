@@ -1,6 +1,8 @@
 {
   "entity.nillo.nillo": "ニロ",
   "entity.nillo.gillo": "ジロ",
+  "entity.nillo.boold": "ボールド",
   "item.nillo.nillo_spawn_egg": "ニロのスポーンエッグ",
-  "item.nillo.gillo_spawn_egg": "ジロのスポーンエッグ"
+  "item.nillo.gillo_spawn_egg": "ジロのスポーンエッグ",
+  "item.nillo.boold_spawn_egg": "ボールドのスポーンエッグ"
 }
