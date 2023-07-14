@@ -95,7 +95,7 @@ public class BooldAnimations {
                                     AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.25f, KeyframeAnimations.posVec(0f, 1f, 0f),
                                     AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
+                            new Keyframe(1.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
                                     AnimationChannel.Interpolations.LINEAR)))
             .addAnimation("head",
                     new AnimationChannel(AnimationChannel.Targets.ROTATION,
@@ -105,7 +105,7 @@ public class BooldAnimations {
                                     AnimationChannel.Interpolations.LINEAR),
                             new Keyframe(0.25f, KeyframeAnimations.degreeVec(-27.5f, 0f, 0f),
                                     AnimationChannel.Interpolations.LINEAR),
-                            new Keyframe(0.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                            new Keyframe(1.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
                                     AnimationChannel.Interpolations.LINEAR))).build();
     public static final AnimationDefinition BABY = AnimationDefinition.Builder.withLength(0f)
             .addAnimation("head",
