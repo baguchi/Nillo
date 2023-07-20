@@ -92,7 +92,7 @@ public class Boold extends Animal {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new AttackGoal(this));
+        this.goalSelector.addGoal(1, new BooldAttackGoal(this));
         this.goalSelector.addGoal(2, new BreedGoal(this, 0.85D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, this.getFoodItems(), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.0D));
@@ -112,12 +112,17 @@ public class Boold extends Animal {
         return ModEntities.BOOLD.get().create(p_146743_);
     }
 
-    static class AttackGoal extends MeleeAttackGoal {
+    @Override
+    protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
+        return p_21132_.height * 0.65F;
+    }
+
+    public static class BooldAttackGoal extends MeleeAttackGoal {
         private final Boold boold;
         private boolean attack;
 
-        public AttackGoal(Boold nillo) {
-            super(nillo, 1.1D, true);
+        public BooldAttackGoal(Boold nillo) {
+            super(nillo, 1.15D, true);
             this.boold = nillo;
         }
 

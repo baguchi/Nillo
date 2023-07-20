@@ -3,10 +3,9 @@ package bagu_chan.nillo.client;
 import bagu_chan.nillo.NilloCore;
 import bagu_chan.nillo.client.model.BooldModel;
 import bagu_chan.nillo.client.model.GilloModel;
+import bagu_chan.nillo.client.model.HornedBooldModel;
 import bagu_chan.nillo.client.model.NilloModel;
-import bagu_chan.nillo.client.render.BooldRenderer;
-import bagu_chan.nillo.client.render.GilloRenderer;
-import bagu_chan.nillo.client.render.NilloRenderer;
+import bagu_chan.nillo.client.render.*;
 import bagu_chan.nillo.register.ModEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,6 +21,8 @@ public class ClientRegistrar {
         event.registerEntityRenderer(ModEntities.NILLO.get(), NilloRenderer::new);
         event.registerEntityRenderer(ModEntities.GILLO.get(), GilloRenderer::new);
         event.registerEntityRenderer(ModEntities.BOOLD.get(), BooldRenderer::new);
+        event.registerEntityRenderer(ModEntities.HORNED_BOOLD.get(), HornedBooldRenderer::new);
+        event.registerEntityRenderer(ModEntities.THROWN_BLOCK.get(), ThrwonBlockRenderer::new);
     }
 
     @SubscribeEvent
@@ -29,6 +30,7 @@ public class ClientRegistrar {
         event.registerLayerDefinition(ModModelLayers.NILLO, NilloModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.GILLO, GilloModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.BOOLD, BooldModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.HORNED_BOOLD, HornedBooldModel::createBodyLayer);
     }
 
 }

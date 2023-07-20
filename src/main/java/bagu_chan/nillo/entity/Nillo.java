@@ -137,8 +137,13 @@ public class Nillo extends Animal {
         this.setHungerCooldown(p_27576_.getInt("HungerCooldown"));
     }
 
-    public boolean canSpeedUp(){
+    public boolean canSpeedUp() {
         return false;
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
+        return p_21132_.height * 0.5F;
     }
 
     static class AttackGoal extends MeleeAttackGoal {

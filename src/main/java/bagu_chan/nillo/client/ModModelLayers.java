@@ -8,5 +8,6 @@ public class ModModelLayers {
     public static ModelLayerLocation NILLO = new ModelLayerLocation(new ResourceLocation(NilloCore.MODID, "nillo"), "nillo");
     public static ModelLayerLocation GILLO = new ModelLayerLocation(new ResourceLocation(NilloCore.MODID, "gillo"), "gillo");
     public static ModelLayerLocation BOOLD = new ModelLayerLocation(new ResourceLocation(NilloCore.MODID, "boold"), "boold");
+    public static ModelLayerLocation HORNED_BOOLD = new ModelLayerLocation(new ResourceLocation(NilloCore.MODID, "horned_boold"), "horned_boold");
 
 }

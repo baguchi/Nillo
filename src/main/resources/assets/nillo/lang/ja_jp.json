@@ -2,7 +2,9 @@
   "entity.nillo.nillo": "ニロ",
   "entity.nillo.gillo": "ジロ",
   "entity.nillo.boold": "ボールド",
+  "entity.nillo.horned_boold": "角付きボールド",
   "item.nillo.nillo_spawn_egg": "ニロのスポーンエッグ",
   "item.nillo.gillo_spawn_egg": "ジロのスポーンエッグ",
-  "item.nillo.boold_spawn_egg": "ボールドのスポーンエッグ"
+  "item.nillo.boold_spawn_egg": "ボールドのスポーンエッグ",
+  "item.nillo.horned_boold_spawn_egg": "角付きボールドのスポーンエッグ"
 }

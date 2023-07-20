@@ -156,4 +156,51 @@ public class BooldAnimations {
                     new AnimationChannel(AnimationChannel.Targets.SCALE,
                             new Keyframe(0f, KeyframeAnimations.scaleVec(0.6f, 0.6f, 0.6f),
                                     AnimationChannel.Interpolations.LINEAR))).build();
+
+
+    public static final AnimationDefinition GROUND_ATTACK = AnimationDefinition.Builder.withLength(1.25f)
+            .addAnimation("head",
+                    new AnimationChannel(AnimationChannel.Targets.POSITION,
+                            new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.25f, KeyframeAnimations.posVec(0f, -15f, 2f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.75f, KeyframeAnimations.posVec(0f, -15f, 2f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.9167666f, KeyframeAnimations.posVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.25f, KeyframeAnimations.posVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("head",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.25f, KeyframeAnimations.degreeVec(92.5f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.75f, KeyframeAnimations.degreeVec(92.5f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.9167666f, KeyframeAnimations.degreeVec(-27.5f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(1.25f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("body",
+                    new AnimationChannel(AnimationChannel.Targets.POSITION,
+                            new Keyframe(0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.25f, KeyframeAnimations.posVec(0f, -2f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.75f, KeyframeAnimations.posVec(0f, -2f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.9167666f, KeyframeAnimations.posVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR)))
+            .addAnimation("body",
+                    new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                            new Keyframe(0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.25f, KeyframeAnimations.degreeVec(15f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.75f, KeyframeAnimations.degreeVec(15f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR),
+                            new Keyframe(0.9167666f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+                                    AnimationChannel.Interpolations.LINEAR))).build();
 }
