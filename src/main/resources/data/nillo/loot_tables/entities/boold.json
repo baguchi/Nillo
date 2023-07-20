@@ -25,7 +25,13 @@
             }
           ],
           "name": "minecraft:leather"
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "name": "beef",
+      "entries": [
         {
           "type": "minecraft:item",
           "functions": [

@@ -63,8 +63,8 @@ public class HornedBooldModel<T extends HornedBoold> extends HierarchicalModel<T
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
-        //this.head.xRot = headPitch * ((float) Math.PI / 180F);
-        this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
+        this.head.xRot = headPitch * ((float) Math.PI / 180F);
+        //this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         if (this.young) {
             this.applyStatic(BooldAnimations.BABY);
         }

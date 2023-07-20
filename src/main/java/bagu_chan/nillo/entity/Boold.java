@@ -2,9 +2,12 @@ package bagu_chan.nillo.entity;
 
 import bagu_chan.nillo.register.ModEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -13,18 +16,22 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class Boold extends Animal {
-
-
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT);
+    public static int TICK_BE_BIGGER = Math.abs(24000);
     public int attackAnimationTick;
     private final int attackAnimationLength = 35;
     private final int attackAnimationLeftActionPoint = 32;
     public final AnimationState attackAnimationState = new AnimationState();
+
+    private int biggerAge;
 
     public Boold(EntityType<? extends Boold> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
@@ -74,6 +81,71 @@ public class Boold extends Animal {
         }
     }
 
+    public InteractionResult mobInteract(Player p_27584_, InteractionHand p_27585_) {
+        ItemStack itemstack = p_27584_.getItemInHand(p_27585_);
+        if (this.isFood(itemstack)) {
+            this.usePlayerItem(p_27584_, p_27585_, itemstack);
+            biggerAge += 200;
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
+        return super.mobInteract(p_27584_, p_27585_);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level().isClientSide) {
+            if (!this.isBaby()) {
+                this.biggerAge += 1;
+                if (biggerAge >= TICK_BE_BIGGER) {
+                    this.biggerBoold();
+                }
+            }
+        }
+    }
+
+    public void setBiggerAge(int biggerAge) {
+        this.biggerAge = biggerAge;
+    }
+
+    public int getBiggerAge() {
+        return biggerAge;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag p_27587_) {
+        super.addAdditionalSaveData(p_27587_);
+        p_27587_.putInt("BiggerAge", this.getBiggerAge());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag p_27576_) {
+        super.readAdditionalSaveData(p_27576_);
+        this.setBiggerAge(p_27576_.getInt("BiggerAge"));
+    }
+
+    private void biggerBoold() {
+        Level $$1 = this.level();
+        if ($$1 instanceof ServerLevel serverlevel) {
+            HornedBoold horned = ModEntities.HORNED_BOOLD.get().create(this.level());
+            if (horned != null) {
+                horned.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                horned.finalizeSpawn(serverlevel, this.level().getCurrentDifficultyAt(horned.blockPosition()), MobSpawnType.CONVERSION, (SpawnGroupData) null, (CompoundTag) null);
+                horned.setNoAi(this.isNoAi());
+                if (this.hasCustomName()) {
+                    horned.setCustomName(this.getCustomName());
+                    horned.setCustomNameVisible(this.isCustomNameVisible());
+                }
+
+                horned.setPersistenceRequired();
+                serverlevel.addFreshEntityWithPassengers(horned);
+                this.discard();
+            }
+        }
+
+    }
+
     public int getAttackAnimationLength() {
         return attackAnimationLength;
     }
@@ -107,7 +179,7 @@ public class Boold extends Animal {
     }
 
     public Ingredient getFoodItems() {
-        return Ingredient.EMPTY;
+        return FOOD_ITEMS;
     }
 
     @Nullable
@@ -152,15 +224,13 @@ public class Boold extends Animal {
                 this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
 
                 if (--this.rushCooldowmTick < 0) {
-                    if (targetPos == null) {
-                        targetPos = livingentity.blockPosition();
-                    } else {
 
-                        this.mob.getLookControl().setLookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 30.0F, 30.0F);
+                    targetPos = livingentity.blockPosition();
 
-                        this.mob.getMoveControl().setWantedPosition(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 1.5F);
-                        this.rushCooldowmTick = 40;
-                    }
+                    this.mob.getLookControl().setLookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 30.0F, 30.0F);
+
+                    this.mob.getNavigation().moveTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 2.25F);
+                    this.rushCooldowmTick = 80;
                 }
                 this.checkAndPerformAttack(livingentity, d0);
 

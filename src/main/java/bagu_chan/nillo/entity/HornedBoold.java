@@ -26,6 +26,7 @@ public class HornedBoold extends Boold {
 
     public HornedBoold(EntityType<? extends HornedBoold> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
+        this.setMaxUpStep(1);
     }
 
     public static AttributeSupplier.Builder createAttributeMap() {

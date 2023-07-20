@@ -12,7 +12,7 @@
               "function": "minecraft:set_count",
               "count": {
                 "min": 3.0,
-                "max": 6.0,
+                "max": 5.0,
                 "type": "minecraft:uniform"
               }
             },
@@ -25,7 +25,13 @@
             }
           ],
           "name": "minecraft:leather"
-        },
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "name": "beef",
+      "entries": [
         {
           "type": "minecraft:item",
           "functions": [

@@ -3,6 +3,6 @@
     "#minecraft:is_taiga",
     "#minecraft:is_forest",
     "#forge:is_desert",
-    "#forge:is_plains"
+    "minecraft:plains"
   ]
 }
