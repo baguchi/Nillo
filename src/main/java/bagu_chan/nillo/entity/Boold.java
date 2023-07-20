@@ -86,6 +86,7 @@ public class Boold extends Animal {
         if (this.isFood(itemstack) && !this.isFullBigger()) {
             this.usePlayerItem(p_27584_, p_27585_, itemstack);
             biggerAge += 200;
+            this.playSound(SoundEvents.GENERIC_EAT);
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
