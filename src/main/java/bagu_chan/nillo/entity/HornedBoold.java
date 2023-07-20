@@ -8,6 +8,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +18,7 @@ import java.util.EnumSet;
 
 public class HornedBoold extends Boold {
 
+    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT);
     public int groundAttackAnimationTick;
     private final int groundAttackAnimationLength = 34;
     private final int groundAttackAnimationLeftActionPoint = (int) (20 * 0.75F);
@@ -26,11 +29,20 @@ public class HornedBoold extends Boold {
     }
 
     public static AttributeSupplier.Builder createAttributeMap() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.24F).add(Attributes.MAX_HEALTH, 50.0D).add(Attributes.FOLLOW_RANGE, 28.0D).add(Attributes.ATTACK_DAMAGE, 6.0F);
+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.24F).add(Attributes.MAX_HEALTH, 50.0D).add(Attributes.FOLLOW_RANGE, 28.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0F).add(Attributes.ATTACK_DAMAGE, 6.0F);
     }
 
     protected float getSoundVolume() {
         return 1.25F;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return this.isBaby() ? (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 2F : (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 0.25F;
+    }
+
+    public Ingredient getFoodItems() {
+        return FOOD_ITEMS;
     }
 
     @Override
@@ -75,6 +87,10 @@ public class HornedBoold extends Boold {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
         return ModEntities.BOOLD.get().create(p_146743_);
+    }
+
+    protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
+        return p_21132_.height * 0.85F;
     }
 
     public static class BooldGroundAttackGoal extends Goal {

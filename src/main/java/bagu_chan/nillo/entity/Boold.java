@@ -13,7 +13,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class Boold extends Animal {
 
-    private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.WHEAT);
 
     public int attackAnimationTick;
     private final int attackAnimationLength = 35;
@@ -37,15 +35,15 @@ public class Boold extends Animal {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.COW_AMBIENT;
+        return SoundEvents.LLAMA_AMBIENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource p_28306_) {
-        return SoundEvents.COW_HURT;
+        return SoundEvents.LLAMA_HURT;
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.COW_DEATH;
+        return SoundEvents.LLAMA_DEATH;
     }
 
     protected void playStepSound(BlockPos p_28301_, BlockState p_28302_) {
@@ -55,6 +53,12 @@ public class Boold extends Animal {
     protected float getSoundVolume() {
         return 0.4F;
     }
+
+    @Override
+    public float getVoicePitch() {
+        return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 2F;
+    }
+
 
     @Override
     public void baseTick() {
@@ -103,7 +107,7 @@ public class Boold extends Animal {
     }
 
     public Ingredient getFoodItems() {
-        return FOOD_ITEMS;
+        return Ingredient.EMPTY;
     }
 
     @Nullable
@@ -120,6 +124,8 @@ public class Boold extends Animal {
     public static class BooldAttackGoal extends MeleeAttackGoal {
         private final Boold boold;
         private boolean attack;
+        private BlockPos targetPos;
+        private int rushCooldowmTick;
 
         public BooldAttackGoal(Boold nillo) {
             super(nillo, 1.15D, true);
@@ -127,9 +133,38 @@ public class Boold extends Animal {
         }
 
         @Override
+        public void start() {
+            super.start();
+            this.rushCooldowmTick = 40;
+        }
+
+        @Override
         public void stop() {
             super.stop();
             this.attack = false;
+        }
+
+        public void tick() {
+            LivingEntity livingentity = this.mob.getTarget();
+
+            if (livingentity != null) {
+                double d0 = this.mob.getPerceivedTargetDistanceSquareForMeleeAttack(livingentity);
+                this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
+
+                if (--this.rushCooldowmTick < 0) {
+                    if (targetPos == null) {
+                        targetPos = livingentity.blockPosition();
+                    } else {
+
+                        this.mob.getLookControl().setLookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 30.0F, 30.0F);
+
+                        this.mob.getMoveControl().setWantedPosition(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 1.5F);
+                        this.rushCooldowmTick = 40;
+                    }
+                }
+                this.checkAndPerformAttack(livingentity, d0);
+
+            }
         }
 
         @Override

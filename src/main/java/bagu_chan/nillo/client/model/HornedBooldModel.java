@@ -33,27 +33,29 @@ public class HornedBooldModel<T extends HornedBoold> extends HierarchicalModel<T
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -9.0F, -12.0F, 16.0F, 16.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -7.0F, -15.0F));
+        PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-8.0F, -9.0F, -12.0F, 16.0F, 16.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -7.0F, -10.0F));
 
-        PartDefinition right_horn = head.addOrReplaceChild("right_horn", CubeListBuilder.create().texOffs(0, 28).addBox(-13.0F, -11.0F, -2.0F, 16.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-6.0F, -8.0F, -6.0F, 0.5236F, 0.0F, 0.0F));
+        PartDefinition right_horn = head.addOrReplaceChild("right_horn", CubeListBuilder.create().texOffs(0, 28).addBox(-13.0F, -11.0F, -2.0F, 16.0F, 16.0F, 2.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 46).mirror().addBox(-13.0F, -17.0F, -2.0F, 16.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-6.0F, -8.0F, -6.0F, 0.5236F, 0.0F, 0.0F));
 
-        PartDefinition left_horn = head.addOrReplaceChild("left_horn", CubeListBuilder.create().texOffs(0, 28).mirror().addBox(-4.0F, -10.5F, -1.0F, 16.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(6.0F, -8.0F, -7.0F, 0.5236F, 0.0F, 0.0F));
+        PartDefinition left_horn = head.addOrReplaceChild("left_horn", CubeListBuilder.create().texOffs(0, 28).mirror().addBox(-4.0F, -10.5F, -1.0F, 16.0F, 16.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(0, 46).addBox(-4.0F, -16.5F, -1.0F, 16.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(6.0F, -8.0F, -7.0F, 0.5236F, 0.0F, 0.0F));
 
-        PartDefinition left_leg_back = partdefinition.addOrReplaceChild("left_leg_back", CubeListBuilder.create().texOffs(0, 58).addBox(-3.0F, 1.0F, -4.0F, 7.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 9.0F, 12.0F));
+        PartDefinition left_leg_back = partdefinition.addOrReplaceChild("left_leg_back", CubeListBuilder.create().texOffs(0, 58).addBox(-3.0F, 1.0F, -4.0F, 8.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 9.0F, 12.0F));
 
         PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 48).addBox(-16.0F, -36.0F, -16.0F, 32.0F, 36.0F, 32.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 84).addBox(16.0F, 0.0F, -16.0F, 0.0F, 6.0F, 32.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 84).addBox(-16.0F, 0.0F, -16.0F, 0.0F, 6.0F, 32.0F, new CubeDeformation(0.0F))
                 .texOffs(63, 116).addBox(-16.0F, 0.0F, -16.0F, 32.0F, 6.0F, 0.0F, new CubeDeformation(0.0F))
-                .texOffs(63, 116).addBox(-16.0F, 0.0F, 16.0F, 32.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 14.0F, 1.0F));
+                .texOffs(63, 116).addBox(-16.0F, 0.0F, 16.0F, 32.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 12.0F, 0.0F, -0.4363F, 0.0F, 0.0F));
 
         PartDefinition tails = body.addOrReplaceChild("tails", CubeListBuilder.create().texOffs(92, 48).addBox(-3.0F, 0.0F, -1.0F, 6.0F, 0.0F, 17.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -20.0F, 16.0F));
 
-        PartDefinition right_leg = partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 58).addBox(-4.0F, 0.0F, -4.0F, 7.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-8.0F, 10.0F, -10.0F));
+        PartDefinition right_leg = partdefinition.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(0, 58).addBox(-5.0F, 0.0F, -4.0F, 8.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-8.0F, 10.0F, -5.0F));
 
-        PartDefinition right_leg_back = partdefinition.addOrReplaceChild("right_leg_back", CubeListBuilder.create().texOffs(0, 58).addBox(-4.0F, 0.0F, -4.0F, 7.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-8.0F, 10.0F, 12.0F));
+        PartDefinition right_leg_back = partdefinition.addOrReplaceChild("right_leg_back", CubeListBuilder.create().texOffs(0, 58).addBox(-5.0F, 0.0F, -4.0F, 8.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(-8.0F, 10.0F, 12.0F));
 
-        PartDefinition left_leg = partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(0, 58).addBox(-3.0F, 0.0F, -4.0F, 7.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 10.0F, -10.0F));
+        PartDefinition left_leg = partdefinition.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(0, 58).addBox(-3.0F, 0.0F, -4.0F, 8.0F, 14.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 10.0F, -2.0F));
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
@@ -61,7 +63,7 @@ public class HornedBooldModel<T extends HornedBoold> extends HierarchicalModel<T
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.head.xRot = headPitch * ((float) Math.PI / 180F);
+        //this.head.xRot = headPitch * ((float) Math.PI / 180F);
         this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
         if (this.young) {
             this.applyStatic(BooldAnimations.BABY);
