@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -32,6 +33,9 @@ public class Boold extends Animal {
     public final AnimationState attackAnimationState = new AnimationState();
 
     private int biggerAge;
+
+    private float aggressiveScale;
+    private float aggressiveScaleOld;
 
     public Boold(EntityType<? extends Boold> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
@@ -111,6 +115,23 @@ public class Boold extends Animal {
         }
     }
 
+    public void tick() {
+        super.tick();
+        if (this.level().isClientSide) {
+
+            this.aggressiveScaleOld = this.aggressiveScale;
+            if (this.isAggressive()) {
+                this.aggressiveScale = Mth.clamp(this.aggressiveScale + 0.2F, 0.0F, 1.0F);
+            } else {
+                this.aggressiveScale = Mth.clamp(this.aggressiveScale - 0.2F, 0.0F, 1.0F);
+            }
+        }
+    }
+
+    public float getAggressiveAnimationScale(float p_29570_) {
+        return Mth.lerp(p_29570_, this.aggressiveScaleOld, this.aggressiveScale);
+    }
+
     public boolean isFullBigger() {
         return false;
     }
@@ -185,7 +206,7 @@ public class Boold extends Animal {
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.8D));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Boold.class).setAlertOthers());
     }
 
     public Ingredient getFoodItems() {
@@ -203,56 +224,78 @@ public class Boold extends Animal {
         return p_21132_.height * 0.65F;
     }
 
-    public static class BooldAttackGoal extends MeleeAttackGoal {
+    public void triggerAfterRush() {
+    }
+
+    public static class BooldAttackGoal extends Goal {
         private final Boold boold;
         private boolean attack;
         private BlockPos targetPos;
         private int rushCooldowmTick;
+        public int ticksUntilNextAttack;
 
-        public BooldAttackGoal(Boold nillo) {
-            super(nillo, 1.15D, true);
-            this.boold = nillo;
+        public BooldAttackGoal(Boold boold) {
+            super();
+            this.boold = boold;
+        }
+
+        @Override
+        public boolean canUse() {
+            LivingEntity livingentity = this.boold.getTarget();
+            if (livingentity == null) {
+                return false;
+            } else if (!livingentity.isAlive()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.rushCooldowmTick >= 0 && this.targetPos == null || this.targetPos != null && !this.boold.getNavigation().isDone();
         }
 
         @Override
         public void start() {
             super.start();
-            this.rushCooldowmTick = 40;
+            this.targetPos = null;
+            this.rushCooldowmTick = 200;
+            this.boold.setAggressive(true);
         }
 
         @Override
         public void stop() {
             super.stop();
             this.attack = false;
+            this.boold.triggerAfterRush();
+            this.boold.setAggressive(false);
         }
 
         public void tick() {
-            LivingEntity livingentity = this.mob.getTarget();
+            LivingEntity livingentity = this.boold.getTarget();
 
             if (livingentity != null) {
-                double d0 = this.mob.getPerceivedTargetDistanceSquareForMeleeAttack(livingentity);
+                double d0 = this.boold.getPerceivedTargetDistanceSquareForMeleeAttack(livingentity);
                 this.ticksUntilNextAttack = Math.max(this.ticksUntilNextAttack - 1, 0);
-
-                if (--this.rushCooldowmTick < 0) {
+                if (--this.rushCooldowmTick == 140) {
 
                     targetPos = livingentity.blockPosition();
 
-                    this.mob.getLookControl().setLookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 30.0F, 30.0F);
+                    this.boold.getLookControl().setLookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 30.0F, 30.0F);
 
-                    this.mob.getNavigation().moveTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 2.25F);
-                    this.rushCooldowmTick = 80;
+                    this.boold.getNavigation().moveTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 2.25F);
                 }
                 this.checkAndPerformAttack(livingentity, d0);
 
             }
         }
 
-        @Override
         protected void checkAndPerformAttack(LivingEntity p_29589_, double p_29590_) {
             double d0 = this.getAttackReachSqr(p_29589_);
             if (p_29590_ <= d0 && this.getTicksUntilNextAttack() == this.boold.getAttackAnimationLeftActionPoint()) {
-
-                this.mob.doHurtTarget(p_29589_);
+                this.boold.doHurtTarget(p_29589_);
+                this.boold.setAggressive(false);
                 this.attack = true;
                 if (this.getTicksUntilNextAttack() == 0) {
                     this.resetAttackCooldown();
@@ -272,8 +315,16 @@ public class Boold extends Animal {
 
         }
 
+        protected int getTicksUntilNextAttack() {
+            return this.ticksUntilNextAttack;
+        }
+
         protected void resetAttackCooldown() {
             this.ticksUntilNextAttack = this.adjustedTickDelay(36);
+        }
+
+        protected double getAttackReachSqr(LivingEntity p_25556_) {
+            return (double) (this.boold.getBbWidth() * 2.0F * this.boold.getBbWidth() * 2.0F + p_25556_.getBbWidth());
         }
 
         @Override

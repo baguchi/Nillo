@@ -35,7 +35,7 @@ public class ThrwonBlockRenderer extends EntityRenderer<ThrownBlockEntity> {
                 posestack.pushPose();
                 BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
                 posestack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot())));
-                posestack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 0.0F));
+                posestack.mulPose(Axis.XP.rotationDegrees(-Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 0.0F));
                 posestack.translate(-0.5D, 0.0D, -0.5D);
                 BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
                 var model = dispatcher.getBlockModel(blockstate);

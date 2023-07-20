@@ -23,6 +23,7 @@ public class HornedBoold extends Boold {
     private final int groundAttackAnimationLength = 34;
     private final int groundAttackAnimationLeftActionPoint = (int) (20 * 0.75F);
     public final AnimationState groundAttackAnimationState = new AnimationState();
+    public BooldGroundAttackGoal booldGroundAttackGoal;
 
     public HornedBoold(EntityType<? extends HornedBoold> p_27557_, Level p_27558_) {
         super(p_27557_, p_27558_);
@@ -76,8 +77,9 @@ public class HornedBoold extends Boold {
 
     @Override
     protected void registerGoals() {
+        this.booldGroundAttackGoal = new BooldGroundAttackGoal(this);
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new BooldGroundAttackGoal(this));
+        this.goalSelector.addGoal(1, this.booldGroundAttackGoal);
         this.goalSelector.addGoal(2, new BooldAttackGoal(this));
         this.goalSelector.addGoal(3, new BreedGoal(this, 0.8D));
         this.goalSelector.addGoal(4, new TemptGoal(this, 1.0D, this.getFoodItems(), false));
@@ -85,7 +87,7 @@ public class HornedBoold extends Boold {
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.75D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Boold.class).setAlertOthers());
     }
 
     @Nullable
@@ -98,11 +100,17 @@ public class HornedBoold extends Boold {
         return p_21132_.height * 0.85F;
     }
 
+    @Override
+    public void triggerAfterRush() {
+        super.triggerAfterRush();
+        this.booldGroundAttackGoal.trigger();
+    }
+
     public static class BooldGroundAttackGoal extends Goal {
         private final HornedBoold boold;
-        private int cooldown;
         private int tick;
         private boolean failed;
+        protected boolean forceTrigger;
 
         public BooldGroundAttackGoal(HornedBoold nillo) {
             super();
@@ -112,13 +120,16 @@ public class HornedBoold extends Boold {
 
         @Override
         public boolean canUse() {
-            if (this.cooldown > 0) {
-                --this.cooldown;
-            }
-            if (this.cooldown <= 0) {
-                this.cooldown = 20 * 5 + this.boold.random.nextInt(10) * 20;
-                if (this.boold.getTarget() != null && this.boold.distanceToSqr(this.boold.getTarget()) > 46F) {
+            if (this.forceTrigger) {
 
+                LivingEntity livingentity = this.boold.getTarget();
+                if (livingentity == null) {
+                    this.forceTrigger = false;
+                    return false;
+                } else if (!livingentity.isAlive()) {
+                    this.forceTrigger = false;
+                    return false;
+                } else {
                     return true;
                 }
             }
@@ -141,6 +152,7 @@ public class HornedBoold extends Boold {
         @Override
         public void stop() {
             super.stop();
+            this.forceTrigger = false;
         }
 
         @Override
@@ -172,6 +184,10 @@ public class HornedBoold extends Boold {
                     }
                 }
             }
+        }
+
+        public void trigger() {
+            this.forceTrigger = true;
         }
 
         @Override
