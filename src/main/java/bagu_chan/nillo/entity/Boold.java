@@ -83,7 +83,7 @@ public class Boold extends Animal {
 
     public InteractionResult mobInteract(Player p_27584_, InteractionHand p_27585_) {
         ItemStack itemstack = p_27584_.getItemInHand(p_27585_);
-        if (this.isFood(itemstack)) {
+        if (this.isFood(itemstack) && !this.isFullBigger()) {
             this.usePlayerItem(p_27584_, p_27585_, itemstack);
             biggerAge += 200;
             return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -93,16 +93,25 @@ public class Boold extends Animal {
     }
 
     @Override
+    public boolean isFood(ItemStack p_27600_) {
+        return getFoodItems().test(p_27600_);
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
         if (!this.level().isClientSide) {
-            if (!this.isBaby()) {
+            if (!this.isBaby() && this.isFullBigger()) {
                 this.biggerAge += 1;
                 if (biggerAge >= TICK_BE_BIGGER) {
                     this.biggerBoold();
                 }
             }
         }
+    }
+
+    public boolean isFullBigger() {
+        return false;
     }
 
     public void setBiggerAge(int biggerAge) {

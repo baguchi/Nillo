@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -108,6 +109,11 @@ public class Nillo extends Animal {
 
     public Ingredient getFoodItems() {
         return FOOD_ITEMS;
+    }
+
+    @Override
+    public boolean isFood(ItemStack p_27600_) {
+        return getFoodItems().test(p_27600_);
     }
 
     @Nullable

@@ -60,6 +60,10 @@ public class HornedBoold extends Boold {
         }
     }
 
+    public boolean isFullBigger() {
+        return true;
+    }
+
     @Override
     public void handleEntityEvent(byte p_21375_) {
         if (p_21375_ == 61) {
