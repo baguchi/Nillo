@@ -293,10 +293,13 @@ public class Boold extends Animal {
 
         protected void checkAndPerformAttack(LivingEntity p_29589_, double p_29590_) {
             double d0 = this.getAttackReachSqr(p_29589_);
-            if (p_29590_ <= d0 && this.getTicksUntilNextAttack() == this.boold.getAttackAnimationLeftActionPoint()) {
-                this.boold.doHurtTarget(p_29589_);
+            if (this.getTicksUntilNextAttack() == this.boold.getAttackAnimationLeftActionPoint()) {
                 this.boold.setAggressive(false);
+                if (p_29590_ <= d0) {
+                    this.boold.doHurtTarget(p_29589_);
+                }
                 this.attack = true;
+
                 if (this.getTicksUntilNextAttack() == 0) {
                     this.resetAttackCooldown();
                 }

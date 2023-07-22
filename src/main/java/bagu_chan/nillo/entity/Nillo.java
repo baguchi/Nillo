@@ -171,9 +171,11 @@ public class Nillo extends Animal {
         @Override
         protected void checkAndPerformAttack(LivingEntity p_29589_, double p_29590_) {
             double d0 = this.getAttackReachSqr(p_29589_);
-            if (p_29590_ <= d0 && this.getTicksUntilNextAttack() == this.nillo.getAttackAnimationLeftActionPoint()) {
+            if (this.getTicksUntilNextAttack() == this.nillo.getAttackAnimationLeftActionPoint()) {
 
-                this.mob.doHurtTarget(p_29589_);
+                if (p_29590_ <= d0) {
+                    this.mob.doHurtTarget(p_29589_);
+                }
                 this.attack = true;
                 if (this.getTicksUntilNextAttack() == 0) {
                     this.resetAttackCooldown();
