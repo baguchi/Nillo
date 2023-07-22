@@ -298,7 +298,6 @@ public class Boold extends Animal {
                 if (p_29590_ <= d0) {
                     this.boold.doHurtTarget(p_29589_);
                 }
-                this.attack = true;
 
                 if (this.getTicksUntilNextAttack() == 0) {
                     this.resetAttackCooldown();
@@ -306,6 +305,7 @@ public class Boold extends Animal {
             } else if (p_29590_ <= d0) {
                 if (this.getTicksUntilNextAttack() == this.boold.getAttackAnimationLength()) {
                     this.boold.level().broadcastEntityEvent(this.boold, (byte) 4);
+                    this.attack = true;
                 }
                 if (this.getTicksUntilNextAttack() == 0) {
                     this.resetAttackCooldown();

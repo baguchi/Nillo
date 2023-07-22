@@ -176,7 +176,7 @@ public class Nillo extends Animal {
                 if (p_29590_ <= d0) {
                     this.mob.doHurtTarget(p_29589_);
                 }
-                this.attack = true;
+
                 if (this.getTicksUntilNextAttack() == 0) {
                     this.resetAttackCooldown();
                 }
@@ -186,6 +186,7 @@ public class Nillo extends Animal {
             } else if (p_29590_ <= d0) {
                 if (this.getTicksUntilNextAttack() == this.nillo.getAttackAnimationLength()) {
                     this.nillo.level().broadcastEntityEvent(this.nillo, (byte) 4);
+                    this.attack = true;
                 }
                 if (this.getTicksUntilNextAttack() == 0) {
                     this.resetAttackCooldown();
