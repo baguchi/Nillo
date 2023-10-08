@@ -327,7 +327,7 @@ public class Boold extends Animal {
         }
 
         protected double getAttackReachSqr(LivingEntity p_25556_) {
-            return (double) (this.boold.getBbWidth() * 2.0F * this.boold.getBbWidth() * 2.0F + p_25556_.getBbWidth());
+            return (double) (this.boold.getBbWidth() * 1.0F * this.boold.getBbWidth() * 1.0F + p_25556_.getBbWidth());
         }
 
         @Override
