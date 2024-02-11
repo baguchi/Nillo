@@ -40,7 +40,7 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 
 		PartDefinition jaw = head.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(47, 0).addBox(-3.0F, 1.0F, -10.0F, 6.0F, 0.0F, 10.0F, new CubeDeformation(0.1F))
 				.texOffs(0, 30).addBox(-12.0F, -11.0F, -12.0F, 24.0F, 14.0F, 12.0F, new CubeDeformation(0.1F))
-				.texOffs(60, 28).addBox(-12.0F, 3.0F, -12.0F, 24.0F, 0.0F, 12.0F, new CubeDeformation(0.1F)), PartPose.offset(0.0F, 4.0F, 0.0F));
+				.texOffs(60, 28).addBox(-12.0F, 2.99F, -12.0F, 24.0F, 0.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		PartDefinition plant = head.addOrReplaceChild("plant", CubeListBuilder.create().texOffs(0, 34).addBox(-2.5F, -7.0F, 0.0F, 6.0F, 7.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(10.5F, -8.0F, -11.0F, 0.0F, 0.0F, 0.6545F));
 
@@ -59,10 +59,10 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 		this.head.xRot = headPitch * ((float)Math.PI / 180F);
 		this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
 		if(this.young){
-			this.applyStatic(NilloAnimations.BABY);
+			this.applyStatic(NilloAnimations.baby);
 		}
-		this.animateWalk(NilloAnimations.WALK, limbSwing, limbSwingAmount, 1.0F, 1.5F);
-        this.animate(entity.attackAnimationState, NilloAnimations.ATTACK, ageInTicks, entity.isAggressive() ? 1.2F : 1F);
+		this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
+		this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks, entity.isAggressive() ? 1.2F : 1F);
 	}
 
 	@Override

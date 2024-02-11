@@ -1,10 +1,8 @@
 {
   "entity.nillo.nillo": "ニロ",
   "entity.nillo.gillo": "ジロ",
-  "entity.nillo.boold": "ボールド",
-  "entity.nillo.horned_boold": "ボールド(親)",
+  "entity.nillo.wind_nillo": "風ニロ",
   "item.nillo.nillo_spawn_egg": "ニロのスポーンエッグ",
   "item.nillo.gillo_spawn_egg": "ジロのスポーンエッグ",
-  "item.nillo.boold_spawn_egg": "ボールドのスポーンエッグ",
-  "item.nillo.horned_boold_spawn_egg": "ボールド(親)のスポーンエッグ"
+  "item.nillo.wind_nillo_spawn_egg": "風ニロのスポーンエッグ"
 }

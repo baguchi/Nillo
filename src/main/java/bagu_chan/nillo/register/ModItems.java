@@ -11,8 +11,9 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, NilloCore.MODID);
 
     public static final RegistryObject<Item> NILLO_SPAWNEGG = ITEMS.register("nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.NILLO, 0x40302A, 0x92B843, (new Item.Properties())));
+    public static final RegistryObject<Item> WIND_NILLO_SPAWNEGG = ITEMS.register("wind_nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.WIND_NILLO, 0xDDE563, 0xEBE8D4, (new Item.Properties())));
+    public static final RegistryObject<Item> AQUA_NILLO_SPAWNEGG = ITEMS.register("aqua_nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.AQUA_NILLO, 0x7E766E, 0x5C76C2, (new Item.Properties())));
+    public static final RegistryObject<Item> EARTH_NILLO_SPAWNEGG = ITEMS.register("earth_nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.EARTH_NILLO, 0x6E7961, 0x2F3332, (new Item.Properties())));
+    public static final RegistryObject<Item> FIRE_NILLO_SPAWNEGG = ITEMS.register("fire_nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.FIRE_NILLO, 0x693B3A, 0xE17E31, (new Item.Properties())));
     public static final RegistryObject<Item> GILLO_SPAWNEGG = ITEMS.register("gillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GILLO, 0x40302A, 0x92B843, (new Item.Properties())));
-    public static final RegistryObject<Item> BOOLD_SPAWNEGG = ITEMS.register("boold_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.BOOLD, 0x6C4631, 0xCABDA0, (new Item.Properties())));
-    public static final RegistryObject<Item> HORNED_BOOLD_SPAWNEGG = ITEMS.register("horned_boold_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.HORNED_BOOLD, 0x6C4631, 0xCABDA0, (new Item.Properties())));
-
 }
