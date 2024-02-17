@@ -5,8 +5,11 @@ import bagu_chan.nillo.register.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -145,6 +148,23 @@ public class Nillo extends Animal {
 
     public boolean canSpeedUp() {
         return false;
+    }
+
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.PHANTOM_AMBIENT;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource p_33152_) {
+        return SoundEvents.PHANTOM_HURT;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.PHANTOM_DEATH;
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return super.getVoicePitch() + 0.5F;
     }
 
     @Override

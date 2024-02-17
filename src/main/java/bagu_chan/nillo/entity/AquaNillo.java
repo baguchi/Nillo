@@ -2,6 +2,7 @@ package bagu_chan.nillo.entity;
 
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.register.ModEntities;
+import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
@@ -24,13 +25,23 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+
+import java.util.Map;
 
 public class AquaNillo extends Nillo {
+    private final Map<String, Vector3f> modelRotationValues = Maps.newHashMap();
     public AquaNillo(EntityType<? extends AquaNillo> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
-        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.1F, 1.0F, true);
+
+        this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.25F, 1.0F, true);
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
+
+    public Map<String, Vector3f> getModelRotationValues() {
+        return this.modelRotationValues;
+    }
+
 
     @Override
     protected void registerGoals() {

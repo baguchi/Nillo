@@ -14,6 +14,7 @@ public class NilloModel<T extends Nillo> extends HierarchicalModel<T> {
     public final ModelPart realRoot;
     public final ModelPart root;
     public final ModelPart body;
+    public final ModelPart tail;
     public final ModelPart head;
 
     public NilloModel(ModelPart root) {
@@ -21,6 +22,7 @@ public class NilloModel<T extends Nillo> extends HierarchicalModel<T> {
         this.root = root.getChild("root");
         this.body = this.root.getChild("body");
         this.head = this.body.getChild("head");
+        this.tail = this.body.getChild("tail");
     }
 
     public static LayerDefinition createBodyLayer() {
