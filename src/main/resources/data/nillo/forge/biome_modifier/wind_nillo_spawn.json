@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#nillo:wind_nillo_spawnable",
+  "spawners": {
+    "type": "nillo:wind_nillo",
+    "weight": 4,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}
