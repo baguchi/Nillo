@@ -15,14 +15,15 @@ public class AmuletItem extends Item {
 
     public InteractionResult interactLivingEntity(ItemStack p_42954_, Player p_42955_, LivingEntity p_42956_, InteractionHand p_42957_) {
         if (p_42956_ instanceof Nillo nillo) {
-            if (!p_42955_.level().isClientSide && p_42956_.isAlive() && nillo.isOwnedBy(p_42955_)) {
+            if (!p_42955_.level().isClientSide && p_42956_.isAlive() && nillo.isTame() && nillo.isOwnedBy(p_42955_)) {
                 ItemStack itemstack = nillo.getAmuletItemStack().split(1);
                 Player player = (Player) p_42955_;
-                if (!itemstack.isEmpty()) {
+                if (!itemstack.isEmpty() && !player.isCreative()) {
                     if (!player.getInventory().add(itemstack)) {
                         player.drop(itemstack, false);
                     }
                 }
+                player.swing(p_42957_);
                 nillo.setAmuletItemStack(p_42954_.split(1));
             }
 
