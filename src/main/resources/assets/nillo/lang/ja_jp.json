@@ -5,6 +5,8 @@
   "entity.nillo.fire_nillo": "火ニロ",
   "entity.nillo.earth_nillo": "アースニロ",
   "entity.nillo.aqua_nillo": "アクアニロ",
+  "nillo.nillo.sit": "%1$sは座ってる",
+  "nillo.nillo.stand": "%1$sは立った",
   "item.nillo.aqua_amulet": "水のアミュレット",
   "item.nillo.fire_amulet": "火のアミュレット",
   "item.nillo.earth_amulet": "土のアミュレット",

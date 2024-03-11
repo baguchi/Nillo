@@ -1,6 +1,8 @@
 package bagu_chan.nillo.entity;
 
+import bagu_chan.nillo.entity.goal.FollowOwnerWaterGoal;
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
+import bagu_chan.nillo.entity.goal.SitWaterWhenOrderedToGoal;
 import bagu_chan.nillo.register.ModEntities;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
@@ -45,13 +47,17 @@ public class AquaNillo extends Nillo {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new AttackGoal(this));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 0.75D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1D, this.getFoodItems(), false));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.0D));
-        this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
-        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new SitWaterWhenOrderedToGoal(this));
+
+        this.goalSelector.addGoal(2, new AttackGoal(this));
+        this.goalSelector.addGoal(3, new FollowOwnerWaterGoal(this, 1.0, 10.0F, 2.0F, false));
+
+        this.goalSelector.addGoal(4, new BreedGoal(this, 0.75D));
+        this.goalSelector.addGoal(5, new TemptGoal(this, 1.1D, this.getFoodItems(), false));
+        this.goalSelector.addGoal(6, new FollowParentGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new RandomSwimmingGoal(this, 1.0D, 10));
+        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NilloTargetGoal<>(this, Chicken.class, true));
     }

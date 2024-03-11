@@ -5,6 +5,8 @@
   "entity.nillo.fire_nillo": "Hunter Nillo",
   "entity.nillo.earth_nillo": "Rocky Nillo",
   "entity.nillo.aqua_nillo": "Pond Nillo",
+  "nillo.nillo.sit": "%1$s is Sitting",
+  "nillo.nillo.stand": "%1$s is Standing",
   "item.nillo.aqua_amulet": "Aqua Amulet",
   "item.nillo.fire_amulet": "Fire Amulet",
   "item.nillo.earth_amulet": "Earth Amulet",

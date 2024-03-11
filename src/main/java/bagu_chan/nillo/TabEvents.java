@@ -19,5 +19,11 @@ public class TabEvents {
             event.accept(ModItems.FIRE_NILLO_SPAWNEGG);
             event.accept(ModItems.GILLO_SPAWNEGG);
         }
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(ModItems.AQUA_AMULET);
+            event.accept(ModItems.FIRE_AMULET);
+            event.accept(ModItems.WIND_AMULET);
+            event.accept(ModItems.EARTH_AMULET);
+        }
     }
 }
