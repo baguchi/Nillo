@@ -10,6 +10,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class EarthNillo extends Nillo {
     public EarthNillo(EntityType<? extends EarthNillo> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -23,7 +25,15 @@ public class EarthNillo extends Nillo {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return ModEntities.EARTH_NILLO.get().create(p_146743_);
+        EarthNillo nillo = ModEntities.EARTH_NILLO.get().create(p_146743_);
+        if (nillo != null) {
+            UUID uuid = this.getOwnerUUID();
+            if (uuid != null) {
+                nillo.setOwnerUUID(uuid);
+                nillo.setTame(true);
+            }
+        }
+        return nillo;
     }
 
     @Override

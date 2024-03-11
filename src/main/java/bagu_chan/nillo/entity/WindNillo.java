@@ -24,6 +24,8 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class WindNillo extends Nillo {
     public WindNillo(EntityType<? extends WindNillo> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -93,6 +95,16 @@ public class WindNillo extends Nillo {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return ModEntities.WIND_NILLO.get().create(p_146743_);
+        WindNillo nillo = ModEntities.WIND_NILLO.get().create(p_146743_);
+        if (nillo != null) {
+            UUID uuid = this.getOwnerUUID();
+            if (uuid != null) {
+                nillo.setOwnerUUID(uuid);
+                nillo.setTame(true);
+            }
+        }
+        return nillo;
     }
+
+
 }

@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class AquaNillo extends Nillo {
     private final Map<String, Vector3f> modelRotationValues = Maps.newHashMap();
@@ -134,6 +135,14 @@ public class AquaNillo extends Nillo {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return ModEntities.AQUA_NILLO.get().create(p_146743_);
+        AquaNillo nillo = ModEntities.AQUA_NILLO.get().create(p_146743_);
+        if (nillo != null) {
+            UUID uuid = this.getOwnerUUID();
+            if (uuid != null) {
+                nillo.setOwnerUUID(uuid);
+                nillo.setTame(true);
+            }
+        }
+        return nillo;
     }
 }

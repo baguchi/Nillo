@@ -51,8 +51,17 @@ public class Gillo extends Nillo{
     }
 
     @Override
-    public @Nullable AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return ModEntities.NILLO.get().create(p_146743_);
+    @Nullable
+    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
+        Nillo nillo = ModEntities.NILLO.get().create(p_146743_);
+        if (nillo != null) {
+            UUID uuid = this.getOwnerUUID();
+            if (uuid != null) {
+                nillo.setOwnerUUID(uuid);
+                nillo.setTame(true);
+            }
+        }
+        return nillo;
     }
     @Override
     public int getAttackAnimationLength() {
