@@ -2,7 +2,17 @@
   "entity.nillo.nillo": "ニロ",
   "entity.nillo.gillo": "ジロ",
   "entity.nillo.wind_nillo": "風ニロ",
+  "entity.nillo.fire_nillo": "火ニロ",
+  "entity.nillo.earth_nillo": "アースニロ",
+  "entity.nillo.aqua_nillo": "アクアニロ",
+  "item.nillo.aqua_amulet": "水のアミュレット",
+  "item.nillo.fire_amulet": "火のアミュレット",
+  "item.nillo.earth_amulet": "土のアミュレット",
+  "item.nillo.wind_amulet": "風のアミュレット",
   "item.nillo.nillo_spawn_egg": "ニロのスポーンエッグ",
   "item.nillo.gillo_spawn_egg": "ジロのスポーンエッグ",
-  "item.nillo.wind_nillo_spawn_egg": "風ニロのスポーンエッグ"
+  "item.nillo.wind_nillo_spawn_egg": "風ニロのスポーンエッグ",
+  "item.nillo.fire_nillo_spawn_egg": "火ニロのスポーンエッグ",
+  "item.nillo.earth_nillo_spawn_egg": "アースニロのスポーンエッグ",
+  "item.nillo.aqua_nillo_spawn_egg": "アクアニロのスポーンエッグ"
 }

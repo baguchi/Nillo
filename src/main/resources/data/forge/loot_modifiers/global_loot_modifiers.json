@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "entries": [
+    "nillo:desert_amulet",
+    "nillo:ocean_ruin_amulet",
+    "nillo:pillager_outpost_amulet",
+    "nillo:abandoned_mineshaft_amulet"
+  ]
+}

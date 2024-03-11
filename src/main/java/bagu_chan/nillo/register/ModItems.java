@@ -15,5 +15,9 @@ public class ModItems {
     public static final RegistryObject<Item> AQUA_NILLO_SPAWNEGG = ITEMS.register("aqua_nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.AQUA_NILLO, 0x7E766E, 0x5C76C2, (new Item.Properties())));
     public static final RegistryObject<Item> EARTH_NILLO_SPAWNEGG = ITEMS.register("earth_nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.EARTH_NILLO, 0x6E7961, 0x2F3332, (new Item.Properties())));
     public static final RegistryObject<Item> FIRE_NILLO_SPAWNEGG = ITEMS.register("fire_nillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.FIRE_NILLO, 0x693B3A, 0xE17E31, (new Item.Properties())));
-    public static final RegistryObject<Item> GILLO_SPAWNEGG = ITEMS.register("gillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GILLO, 0x40302A, 0x92B843, (new Item.Properties())));
+    public static final RegistryObject<Item> GILLO_SPAWNEGG = ITEMS.register("gillo_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.GILLO, 0x40302A, 0xEB8800, (new Item.Properties())));
+    public static final RegistryObject<Item> AQUA_AMULET = ITEMS.register("aqua_amulet", () -> new Item((new Item.Properties())));
+    public static final RegistryObject<Item> FIRE_AMULET = ITEMS.register("fire_amulet", () -> new Item((new Item.Properties())));
+    public static final RegistryObject<Item> EARTH_AMULET = ITEMS.register("earth_amulet", () -> new Item((new Item.Properties())));
+    public static final RegistryObject<Item> WIND_AMULET = ITEMS.register("wind_amulet", () -> new Item((new Item.Properties())));
 }

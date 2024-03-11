@@ -1,0 +1,10 @@
+{
+  "type": "bagus_lib:loot_in_loot",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/abandoned_mineshaft"
+    }
+  ],
+  "loot_table": "nillo:inject/earth_amulet"
+}
