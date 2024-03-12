@@ -2,6 +2,7 @@ package bagu_chan.nillo.entity;
 
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.register.ModEntities;
+import bagu_chan.nillo.register.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -10,8 +11,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Cow;
-import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -38,14 +40,21 @@ public class Gillo extends Nillo{
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(3, new NilloTargetGoal<>(this, Cow.class, true));
-        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Wolf.class, true));
     }
 
+    protected void registerTargetGoals() {
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, living -> {
+            return living.getType().is(ModTags.EntityTypes.GILLO_HUNT_TARGETS);
+        }));
+    }
     public InteractionResult mobInteract(Player p_30412_, InteractionHand p_30413_) {
         ItemStack itemstack = p_30412_.getItemInHand(p_30413_);
         if ((!p_30412_.isShiftKeyDown()) && this.isTame() && this.isOwnedBy(p_30412_)) {
             p_30412_.startRiding(this);
+            this.setOrderedToSit(false);
             return InteractionResult.SUCCESS;
         } else {
             return super.mobInteract(p_30412_, p_30413_);

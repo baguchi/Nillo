@@ -4,6 +4,7 @@ import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.item.AmuletItem;
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModItems;
+import bagu_chan.nillo.register.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,7 +29,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
@@ -155,7 +155,7 @@ public class Nillo extends TamableAnimal {
     @Override
     public boolean killedEntity(ServerLevel p_216988_, LivingEntity p_216989_) {
         this.hungerCooldown = 1200 + this.random.nextInt(1200);
-        this.heal(1);
+        this.heal(1 + (p_216989_.getMaxHealth() / 4));
         return super.killedEntity(p_216988_, p_216989_);
     }
 
@@ -183,10 +183,16 @@ public class Nillo extends TamableAnimal {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.8D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+        this.registerTargetGoals();
+    }
+
+    protected void registerTargetGoals() {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Chicken.class, true));
+        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, living -> {
+            return living.getType().is(ModTags.EntityTypes.NILLO_HUNT_TARGETS);
+        }));
     }
 
     public static boolean checkNilloSpawnRules(EntityType<? extends Animal> p_218105_, LevelAccessor p_218106_, MobSpawnType p_218107_, BlockPos p_218108_, RandomSource p_218109_) {
