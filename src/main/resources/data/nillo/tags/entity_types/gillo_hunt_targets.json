@@ -1,7 +1,8 @@
 {
   "values": [
     "minecraft:chicken",
-    "minecraft:cow",
+    "minecraft:panda",
+    "minecraft:polar_bear",
     "minecraft:wolf"
   ]
 }

@@ -1,6 +1,7 @@
 package bagu_chan.nillo.entity;
 
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
+import bagu_chan.nillo.item.AmuletItem;
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModTags;
 import net.minecraft.server.level.ServerLevel;
@@ -52,7 +53,9 @@ public class Gillo extends Nillo{
     }
     public InteractionResult mobInteract(Player p_30412_, InteractionHand p_30413_) {
         ItemStack itemstack = p_30412_.getItemInHand(p_30413_);
-        if ((!p_30412_.isShiftKeyDown()) && this.isTame() && this.isOwnedBy(p_30412_)) {
+        if (itemstack.getItem() instanceof AmuletItem) {
+            return InteractionResult.PASS;
+        } else if ((!p_30412_.isShiftKeyDown()) && !this.isFood(itemstack) && this.isTame() && this.isOwnedBy(p_30412_)) {
             p_30412_.startRiding(this);
             this.setOrderedToSit(false);
             return InteractionResult.SUCCESS;

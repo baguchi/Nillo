@@ -26,9 +26,9 @@ public class NilloAnimations {
 
     public static final AnimationDefinition walk = AnimationDefinition.Builder.withLength(0.5F).looping()
             .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                    new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, 20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, -20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, 20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
+                    new Keyframe(0.0F, KeyframeAnimations.degreeVec(1.8169F, 19.9207F, 5.3191F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(0.25F, KeyframeAnimations.degreeVec(1.8169F, -19.9207F, -5.3191F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(0.5F, KeyframeAnimations.degreeVec(1.8169F, 19.9207F, 5.3191F), AnimationChannel.Interpolations.CATMULLROM)
             ))
             .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                     new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, -20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
@@ -36,9 +36,9 @@ public class NilloAnimations {
                     new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, -20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
             ))
             .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION,
-                    new Keyframe(0.0F, KeyframeAnimations.degreeVec(0.0F, -20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(0.25F, KeyframeAnimations.degreeVec(0.0F, 20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
-                    new Keyframe(0.5F, KeyframeAnimations.degreeVec(0.0F, -20.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM)
+                    new Keyframe(0.0F, KeyframeAnimations.degreeVec(-8.1631F, -20.7898F, -5.2677F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(0.25F, KeyframeAnimations.degreeVec(3.6164F, 19.6835F, 10.6276F), AnimationChannel.Interpolations.CATMULLROM),
+                    new Keyframe(0.5F, KeyframeAnimations.degreeVec(-8.1631F, -20.7898F, -5.2677F), AnimationChannel.Interpolations.CATMULLROM)
             ))
             .build();
 

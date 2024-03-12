@@ -6,5 +6,5 @@
       "loot_table_id": "minecraft:chests/desert_pyramid"
     }
   ],
-  "loot_table": "nillo:inject/earth_amulet"
+  "loot_table": "nillo:inject/fire_amulet"
 }

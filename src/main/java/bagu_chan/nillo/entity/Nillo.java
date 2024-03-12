@@ -264,6 +264,7 @@ public class Nillo extends TamableAnimal {
                 if (!p_30412_.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
+                this.playSound(SoundEvents.GENERIC_EAT);
 
                 this.gameEvent(GameEvent.EAT, this);
                 return InteractionResult.SUCCESS;

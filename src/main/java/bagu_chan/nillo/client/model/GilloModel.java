@@ -40,7 +40,7 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 
 		PartDefinition jaw = head.addOrReplaceChild("jaw", CubeListBuilder.create().texOffs(47, 0).addBox(-3.0F, 1.0F, -10.0F, 6.0F, 0.0F, 10.0F, new CubeDeformation(0.1F))
 				.texOffs(0, 30).addBox(-12.0F, -11.0F, -12.0F, 24.0F, 14.0F, 12.0F, new CubeDeformation(0.1F))
-				.texOffs(60, 28).addBox(-12.0F, 2.75F, -12.0F, 24.0F, 0.0F, 12.0F, new CubeDeformation(0.1F)), PartPose.offset(0.0F, 4.0F, 0.0F));
+				.texOffs(60, 28).addBox(-12.0F, 2.75F, -12.0F, 24.0F, 0.0F, 12.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 4.0F, 0.0F));
 
 		PartDefinition plant = head.addOrReplaceChild("plant", CubeListBuilder.create().texOffs(0, 34).addBox(-2.5F, -7.0F, 0.0F, 6.0F, 7.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(10.5F, -8.0F, -11.0F, 0.0F, 0.0F, 0.6545F));
 
