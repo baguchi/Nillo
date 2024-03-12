@@ -20,7 +20,7 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<Nillo>> NILLO = ENTITIES_REGISTRY.register("nillo", () -> EntityType.Builder.of(Nillo::new, MobCategory.CREATURE).sized(0.6F, 0.45F).build(prefix("nillo")));
     public static final RegistryObject<EntityType<WindNillo>> WIND_NILLO = ENTITIES_REGISTRY.register("wind_nillo", () -> EntityType.Builder.of(WindNillo::new, MobCategory.CREATURE).sized(0.6F, 0.45F).build(prefix("wind_nillo")));
-    public static final RegistryObject<EntityType<AquaNillo>> AQUA_NILLO = ENTITIES_REGISTRY.register("aqua_nillo", () -> EntityType.Builder.of(AquaNillo::new, MobCategory.CREATURE).sized(0.6F, 0.45F).build(prefix("aqua_nillo")));
+    public static final RegistryObject<EntityType<AquaNillo>> AQUA_NILLO = ENTITIES_REGISTRY.register("aqua_nillo", () -> EntityType.Builder.of(AquaNillo::new, MobCategory.WATER_CREATURE).sized(0.6F, 0.45F).build(prefix("aqua_nillo")));
     public static final RegistryObject<EntityType<FireNillo>> FIRE_NILLO = ENTITIES_REGISTRY.register("fire_nillo", () -> EntityType.Builder.of(FireNillo::new, MobCategory.CREATURE).sized(0.6F, 0.45F).build(prefix("fire_nillo")));
     public static final RegistryObject<EntityType<EarthNillo>> EARTH_NILLO = ENTITIES_REGISTRY.register("earth_nillo", () -> EntityType.Builder.of(EarthNillo::new, MobCategory.CREATURE).sized(0.6F, 0.45F).build(prefix("earth_nillo")));
     public static final RegistryObject<EntityType<Gillo>> GILLO = ENTITIES_REGISTRY.register("gillo", () -> EntityType.Builder.of(Gillo::new, MobCategory.CREATURE).sized(1.0F, 1.0F).build(prefix("gillo")));
