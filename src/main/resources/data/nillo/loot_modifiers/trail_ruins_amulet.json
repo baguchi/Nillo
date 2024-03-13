@@ -1,0 +1,10 @@
+{
+  "type": "bagus_lib:loot_in_loot",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:archaeology/trail_ruins_rare"
+    }
+  ],
+  "loot_table": "nillo:inject/amulets"
+}

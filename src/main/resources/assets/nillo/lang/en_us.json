@@ -6,7 +6,7 @@
   "entity.nillo.earth_nillo": "Rocky Nillo",
   "entity.nillo.aqua_nillo": "Pond Nillo",
   "nillo.nillo.sit": "%1$s is Sitting",
-  "nillo.nillo.stand": "%1$s is Standing",
+  "nillo.nillo.stand": "%1$s is Following",
   "item.nillo.aqua_amulet": "Aqua Amulet",
   "item.nillo.fire_amulet": "Fire Amulet",
   "item.nillo.earth_amulet": "Earth Amulet",
