@@ -42,7 +42,7 @@ authors="bagu_chan, IlyyMira" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-This mod literally add... Nillo. It's him.
+Add Little Snake-like Creature from Another World!
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.nillo]] #optional

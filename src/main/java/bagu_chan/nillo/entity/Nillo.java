@@ -255,7 +255,9 @@ public class Nillo extends TamableAnimal {
 
     public InteractionResult mobInteract(Player p_30412_, InteractionHand p_30413_) {
         ItemStack itemstack = p_30412_.getItemInHand(p_30413_);
-        if (this.level().isClientSide) {
+        if (itemstack.getItem() instanceof AmuletItem) {
+            return InteractionResult.PASS;
+        } else if (this.level().isClientSide) {
             boolean flag = this.isOwnedBy(p_30412_) || this.isTame() || this.isFood(itemstack) && !this.isTame();
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else if (this.isTame()) {
@@ -271,22 +273,22 @@ public class Nillo extends TamableAnimal {
             } else {
 
                 InteractionResult interactionresult = super.mobInteract(p_30412_, p_30413_);
-                if (itemstack.getItem() instanceof AmuletItem) {
-                    return InteractionResult.PASS;
-                } else if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(p_30412_)) {
-                    this.setOrderedToSit(!this.isOrderedToSit());
-                    if (this.isOrderedToSit()) {
-                        p_30412_.displayClientMessage(Component.translatable("nillo.nillo.sit", this.getDisplayName()), true);
+
+                    if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(p_30412_)) {
+                        this.setOrderedToSit(!this.isOrderedToSit());
+                        if (this.isOrderedToSit()) {
+                            p_30412_.displayClientMessage(Component.translatable("nillo.nillo.sit", this.getDisplayName()), true);
+                        } else {
+                            p_30412_.displayClientMessage(Component.translatable("nillo.nillo.stand", this.getDisplayName()), true);
+                        }
+                        this.jumping = false;
+                        this.navigation.stop();
+                        this.setTarget((LivingEntity) null);
+                        return InteractionResult.SUCCESS;
                     } else {
-                        p_30412_.displayClientMessage(Component.translatable("nillo.nillo.stand", this.getDisplayName()), true);
+                        return interactionresult;
                     }
-                    this.jumping = false;
-                    this.navigation.stop();
-                    this.setTarget((LivingEntity) null);
-                    return InteractionResult.SUCCESS;
-                } else {
-                    return interactionresult;
-                }
+
             }
         } else if (this.isFood(itemstack)) {
             if (!p_30412_.getAbilities().instabuild) {
