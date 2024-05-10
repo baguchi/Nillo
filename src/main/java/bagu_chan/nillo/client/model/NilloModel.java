@@ -82,6 +82,15 @@ public class NilloModel<T extends Nillo> extends HierarchicalModel<T> {
         this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks);
     }
 
+
+    public void copyPropertiesTo(NilloModel<T> p_102873_) {
+        super.copyPropertiesTo(p_102873_);
+        p_102873_.head.copyFrom(this.head);
+        p_102873_.body.copyFrom(this.body);
+        p_102873_.root.copyFrom(this.root);
+        p_102873_.tail.copyFrom(this.tail);
+    }
+
     @Override
     public ModelPart root() {
         return this.realRoot;

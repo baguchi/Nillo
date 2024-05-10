@@ -8,8 +8,6 @@ import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModItems;
 import bagu_chan.nillo.register.ModTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,7 +17,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -39,7 +36,6 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -310,6 +306,11 @@ public class Nillo extends TamableAnimal {
                     InteractionResult interactionresult = super.mobInteract(p_30412_, p_30413_);
                     if (!interactionresult.consumesAction() && this.isOwnedBy(p_30412_)) {
                         this.setOrderedToSit(!this.isOrderedToSit());
+                        if (this.isOrderedToSit()) {
+                            p_30412_.displayClientMessage(Component.translatable("nillo.nillo.sit", this.getDisplayName()), true);
+                        } else {
+                            p_30412_.displayClientMessage(Component.translatable("nillo.nillo.stand", this.getDisplayName()), true);
+                        }
                         this.jumping = false;
                         this.navigation.stop();
                         this.setTarget(null);
@@ -340,7 +341,7 @@ public class Nillo extends TamableAnimal {
         }
     }
 
-    @Override
+    /*@Override
     protected void actuallyHurt(DamageSource p_331935_, float p_330695_) {
         if (!this.canArmorAbsorb(p_331935_)) {
             super.actuallyHurt(p_331935_, p_330695_);
@@ -370,7 +371,7 @@ public class Nillo extends TamableAnimal {
 
     private boolean canArmorAbsorb(DamageSource p_331524_) {
         return this.hasArmor() && !p_331524_.is(DamageTypeTags.BYPASSES_WOLF_ARMOR);
-    }
+    }*/
 
     public boolean hasArmor() {
         return !this.getBodyArmorItem().isEmpty();

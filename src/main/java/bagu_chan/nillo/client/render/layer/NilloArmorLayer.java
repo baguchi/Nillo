@@ -5,9 +5,7 @@ import bagu_chan.nillo.client.model.NilloModel;
 import bagu_chan.nillo.entity.Nillo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
@@ -17,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.Crackiness;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
@@ -56,8 +53,6 @@ public class NilloArmorLayer<T extends Nillo, M extends NilloModel<T>> extends R
             ItemStack itemstack = p_316642_.getBodyArmorItem();
             if (itemstack.getItem() instanceof AnimalArmorItem animalarmoritem && animalarmoritem.getBodyType() == AnimalArmorItem.BodyType.CANINE) {
                 this.getParentModel().copyPropertiesTo(this.model);
-                this.model.prepareMobModel(p_316642_, p_316350_, p_316147_, p_316637_);
-                this.model.setupAnim(p_316642_, p_316350_, p_316147_, p_316734_, p_316302_, p_316605_);
                 VertexConsumer vertexconsumer = p_316832_.getBuffer(RenderType.entityCutoutNoCull(animalarmoritem.getTexture()));
                 this.model.renderToBuffer(p_316608_, vertexconsumer, p_316312_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
                 this.maybeRenderColoredLayer(p_316608_, p_316832_, p_316312_, itemstack, animalarmoritem);
