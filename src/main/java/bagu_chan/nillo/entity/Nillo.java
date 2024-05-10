@@ -1,11 +1,15 @@
 package bagu_chan.nillo.entity;
 
+import bagu_chan.bagus_lib.entity.goal.AnimateAttackGoal;
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.item.AmuletItem;
+import bagu_chan.nillo.item.NilloArmorItem;
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModItems;
 import bagu_chan.nillo.register.ModTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,6 +19,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,16 +39,20 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 
 //example Entity
@@ -52,8 +62,8 @@ public class Nillo extends TamableAnimal {
 
     private int hungerCooldown;
     public int attackAnimationTick;
-    private final int attackAnimationLength = 10;
-    private final int attackAnimationLeftActionPoint = 2;
+    private final int attackAnimationLength = 12;
+    private final int attackAnimationActionPoint = 8;
     public final AnimationState attackAnimationState = new AnimationState();
     public Nillo(EntityType<? extends Nillo> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
@@ -64,9 +74,9 @@ public class Nillo extends TamableAnimal {
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_AUMLET_ID, ItemStack.EMPTY);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_AUMLET_ID, ItemStack.EMPTY);
     }
 
     @Override
@@ -87,8 +97,8 @@ public class Nillo extends TamableAnimal {
         return attackAnimationLength;
     }
 
-    public int getAttackAnimationLeftActionPoint() {
-        return attackAnimationLeftActionPoint;
+    public int getAttackAnimationActionPoint() {
+        return attackAnimationActionPoint;
     }
 
     public int getHungerCooldown() {
@@ -174,7 +184,7 @@ public class Nillo extends TamableAnimal {
         super.registerGoals();
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new AttackGoal(this));
+        this.goalSelector.addGoal(2, new AttackGoal(this, 1.25F, 8, 12));
         this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
 
         this.goalSelector.addGoal(4, new BreedGoal(this, 0.75D));
@@ -196,7 +206,7 @@ public class Nillo extends TamableAnimal {
     }
 
     public static boolean checkNilloSpawnRules(EntityType<? extends Animal> p_218105_, LevelAccessor p_218106_, MobSpawnType p_218107_, BlockPos p_218108_, RandomSource p_218109_) {
-        return (p_218106_.getBlockState(p_218108_.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) || p_218106_.getBlockState(p_218108_.below()).is(Tags.Blocks.SAND)) && isBrightEnoughToSpawn(p_218106_, p_218108_);
+        return (p_218106_.getBlockState(p_218108_.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) || p_218106_.getBlockState(p_218108_.below()).is(Tags.Blocks.SANDS)) && isBrightEnoughToSpawn(p_218106_, p_218108_);
     }
 
     public Ingredient getFoodItems() {
@@ -216,7 +226,7 @@ public class Nillo extends TamableAnimal {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {
                 nillo.setOwnerUUID(uuid);
-                nillo.setTame(true);
+                nillo.setTame(true, true);
             }
         }
         return nillo;
@@ -235,7 +245,7 @@ public class Nillo extends TamableAnimal {
         super.addAdditionalSaveData(p_27587_);
         p_27587_.putInt("HungerCooldown", this.getHungerCooldown());
         if (!this.getAmuletItemStack().isEmpty()) {
-            p_27587_.put("Item", this.getAmuletItemStack().save(new CompoundTag()));
+            p_27587_.put("Item", this.getAmuletItemStack().save(this.registryAccess(), new CompoundTag()));
 
         }
     }
@@ -247,9 +257,9 @@ public class Nillo extends TamableAnimal {
         this.setHungerCooldown(p_27576_.getInt("HungerCooldown"));
         CompoundTag compoundtag = p_27576_.getCompound("Item");
         if (compoundtag != null && !compoundtag.isEmpty()) {
-            ItemStack itemstack = ItemStack.of(compoundtag);
+            Optional<ItemStack> itemstack = ItemStack.parse(this.registryAccess(), compoundtag);
 
-            this.setAmuletItemStack(itemstack);
+            this.setAmuletItemStack(itemstack.orElse(ItemStack.EMPTY));
         }
     }
 
@@ -262,7 +272,7 @@ public class Nillo extends TamableAnimal {
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else if (this.isTame()) {
             if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                this.heal((float) itemstack.getFoodProperties(this).getNutrition());
+                this.heal((float) itemstack.getFoodProperties(this).nutrition());
                 if (!p_30412_.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
@@ -271,31 +281,50 @@ public class Nillo extends TamableAnimal {
                 this.gameEvent(GameEvent.EAT, this);
                 return InteractionResult.SUCCESS;
             } else {
-
-                InteractionResult interactionresult = super.mobInteract(p_30412_, p_30413_);
-
-                    if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(p_30412_)) {
+                if (!(this instanceof Gillo) && itemstack.getItem() instanceof NilloArmorItem && this.isOwnedBy(p_30412_) && !this.hasArmor() && !this.isBaby()) {
+                    this.setBodyArmorItem(itemstack.copyWithCount(1));
+                    itemstack.consume(1, p_30412_);
+                    return InteractionResult.SUCCESS;
+                } else if (itemstack.is(Items.SHEARS)
+                        && this.isOwnedBy(p_30412_)
+                        && this.hasArmor()
+                        && (!EnchantmentHelper.hasBindingCurse(this.getBodyArmorItem()) || p_30412_.isCreative())) {
+                    itemstack.hurtAndBreak(1, p_30412_, getSlotForHand(p_30413_));
+                    this.playSound(SoundEvents.ARMOR_UNEQUIP_WOLF);
+                    ItemStack itemstack1 = this.getBodyArmorItem();
+                    this.setBodyArmorItem(ItemStack.EMPTY);
+                    this.spawnAtLocation(itemstack1);
+                    return InteractionResult.SUCCESS;
+                }/* else if (ArmorMaterials.ARMADILLO.value().repairIngredient().get().test(itemstack)
+                        && this.isInSittingPose()
+                        && this.hasArmor()
+                        && this.isOwnedBy(p_30412_)
+                        && this.getBodyArmorItem().isDamaged()) {
+                    itemstack.shrink(1);
+                    this.playSound(SoundEvents.WOLF_ARMOR_REPAIR);
+                    ItemStack itemstack2 = this.getBodyArmorItem();
+                    int i = (int)((float)itemstack2.getMaxDamage() * 0.125F);
+                    itemstack2.setDamageValue(Math.max(0, itemstack2.getDamageValue() - i));
+                    return InteractionResult.SUCCESS;
+                }*/ else {
+                    InteractionResult interactionresult = super.mobInteract(p_30412_, p_30413_);
+                    if (!interactionresult.consumesAction() && this.isOwnedBy(p_30412_)) {
                         this.setOrderedToSit(!this.isOrderedToSit());
-                        if (this.isOrderedToSit()) {
-                            p_30412_.displayClientMessage(Component.translatable("nillo.nillo.sit", this.getDisplayName()), true);
-                        } else {
-                            p_30412_.displayClientMessage(Component.translatable("nillo.nillo.stand", this.getDisplayName()), true);
-                        }
                         this.jumping = false;
                         this.navigation.stop();
-                        this.setTarget((LivingEntity) null);
-                        return InteractionResult.SUCCESS;
+                        this.setTarget(null);
+                        return InteractionResult.SUCCESS_NO_ITEM_USED;
                     } else {
                         return interactionresult;
                     }
-
+                }
             }
         } else if (this.isFood(itemstack)) {
             if (!p_30412_.getAbilities().instabuild) {
                 itemstack.shrink(1);
             }
 
-            if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_30412_)) {
+            if (this.random.nextInt(3) == 0 && !EventHooks.onAnimalTame(this, p_30412_)) {
                 this.tame(p_30412_);
                 this.navigation.stop();
                 this.setTarget((LivingEntity) null);
@@ -311,8 +340,40 @@ public class Nillo extends TamableAnimal {
         }
     }
 
-    public boolean canSpeedUp() {
-        return false;
+    @Override
+    protected void actuallyHurt(DamageSource p_331935_, float p_330695_) {
+        if (!this.canArmorAbsorb(p_331935_)) {
+            super.actuallyHurt(p_331935_, p_330695_);
+        } else {
+            ItemStack itemstack = this.getBodyArmorItem();
+            int i = itemstack.getDamageValue();
+            int j = itemstack.getMaxDamage();
+            itemstack.hurtAndBreak(Mth.ceil(p_330695_), this, EquipmentSlot.BODY);
+            if (Crackiness.WOLF_ARMOR.byDamage(i, j) != Crackiness.WOLF_ARMOR.byDamage(this.getBodyArmorItem())) {
+                this.playSound(SoundEvents.WOLF_ARMOR_CRACK);
+                if (this.level() instanceof ServerLevel serverlevel) {
+                    serverlevel.sendParticles(
+                            new ItemParticleOption(ParticleTypes.ITEM, Items.ARMADILLO_SCUTE.getDefaultInstance()),
+                            this.getX(),
+                            this.getY() + 1.0,
+                            this.getZ(),
+                            20,
+                            0.2,
+                            0.1,
+                            0.2,
+                            0.1
+                    );
+                }
+            }
+        }
+    }
+
+    private boolean canArmorAbsorb(DamageSource p_331524_) {
+        return this.hasArmor() && !p_331524_.is(DamageTypeTags.BYPASSES_WOLF_ARMOR);
+    }
+
+    public boolean hasArmor() {
+        return !this.getBodyArmorItem().isEmpty();
     }
 
     protected SoundEvent getAmbientSound() {
@@ -349,64 +410,43 @@ public class Nillo extends TamableAnimal {
         }
     }
 
-    @Override
-    protected float getStandingEyeHeight(Pose p_21131_, EntityDimensions p_21132_) {
-        return p_21132_.height * 0.5F;
-    }
 
-    static class AttackGoal extends MeleeAttackGoal {
+    static class AttackGoal extends AnimateAttackGoal {
         private final Nillo nillo;
-        private boolean attack;
 
-        public AttackGoal(Nillo nillo) {
-            super(nillo, 1.1D, true);
-            this.nillo = nillo;
+        public AttackGoal(Nillo attacker, double speed, int actionPoint, int attackLength) {
+            super(attacker, speed, actionPoint, attackLength);
+            this.nillo = attacker;
         }
 
         @Override
-        public void stop() {
-            super.stop();
-            this.attack = false;
-            this.nillo.setAggressive(false);
-        }
-
-        @Override
-        protected void checkAndPerformAttack(LivingEntity p_29589_, double p_29590_) {
-            double d0 = this.getAttackReachSqr(p_29589_);
-            if (this.getTicksUntilNextAttack() == this.nillo.getAttackAnimationLeftActionPoint()) {
-
-                if (p_29590_ <= d0) {
-                    this.mob.doHurtTarget(p_29589_);
+        protected void checkAndPerformAttack(LivingEntity target) {
+            if (this.isTimeToAttack()) {
+                if (this.canPerformAttack(target)) {
+                    this.doAttack(target);
                 }
-
-                if (this.getTicksUntilNextAttack() == 0) {
+            } else if (this.attackTicks >= this.nillo.getAttackAnimationLength()) {
+                this.resetAttackCooldown();
+                this.attack = false;
+            } else if (this.attackTicks == 0 || !this.attack) {
+                if (!this.canPerformAttack(target)) {
                     this.resetAttackCooldown();
-                }
-                if (this.nillo.canSpeedUp()) {
-                    this.nillo.setAggressive(true);
-                }
-            } else if (p_29590_ <= d0) {
-                if (this.getTicksUntilNextAttack() == this.nillo.getAttackAnimationLength()) {
-                    this.nillo.level().broadcastEntityEvent(this.nillo, (byte) 4);
+                } else {
                     this.attack = true;
+                    this.doTheAnimation();
                 }
-                if (this.getTicksUntilNextAttack() == 0) {
-                    this.resetAttackCooldown();
-                }
+            }
+
+            if (this.attack) {
+                this.attackTicks = Mth.clamp(this.attackTicks + 1, 0, this.attackLength);
             } else {
-                if (this.getTicksUntilNextAttack() == 0 || !this.attack) {
-                    this.resetAttackCooldown();
-                }
+                this.attackTicks = 0;
             }
 
         }
 
-        protected void resetAttackCooldown() {
-            this.ticksUntilNextAttack = this.adjustedTickDelay(11);
-        }
-
-        protected double getAttackReachSqr(LivingEntity attackTarget) {
-            return (double) (this.nillo.getBbWidth() * 1.6F * this.nillo.getBbWidth() * 1.6F + attackTarget.getBbWidth());
+        protected boolean isTimeToAttack() {
+            return this.attackTicks == this.nillo.getAttackAnimationActionPoint();
         }
 
         @Override

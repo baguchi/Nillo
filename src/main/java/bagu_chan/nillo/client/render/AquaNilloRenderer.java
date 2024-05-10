@@ -3,6 +3,7 @@ package bagu_chan.nillo.client.render;
 import bagu_chan.nillo.NilloCore;
 import bagu_chan.nillo.client.ModModelLayers;
 import bagu_chan.nillo.client.model.AquaNilloModel;
+import bagu_chan.nillo.client.render.layer.NilloArmorLayer;
 import bagu_chan.nillo.entity.AquaNillo;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -13,6 +14,7 @@ public class AquaNilloRenderer extends MobRenderer<AquaNillo, AquaNilloModel<Aqu
 
     public AquaNilloRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new AquaNilloModel<>(p_174304_.bakeLayer(ModModelLayers.AQUA_NILLO)), 0.3F);
+        this.addLayer(new NilloArmorLayer<>(this, p_174304_.getModelSet()));
     }
 
     @Override

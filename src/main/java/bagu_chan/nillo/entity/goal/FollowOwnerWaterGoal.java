@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 import java.util.EnumSet;
@@ -119,8 +119,8 @@ public class FollowOwnerWaterGoal extends Goal {
     }
 
     private boolean canTeleportTo(BlockPos p_25308_) {
-        BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, p_25308_.mutable());
-        if (blockpathtypes != BlockPathTypes.WATER) {
+        PathType blockpathtypes = WalkNodeEvaluator.getPathTypeStatic(this.tamable, p_25308_.mutable());
+        if (blockpathtypes != PathType.WATER) {
             return false;
         } else {
             BlockState blockstate = this.level.getBlockState(p_25308_.below());

@@ -30,7 +30,7 @@ public class FireNillo extends Nillo {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {
                 nillo.setOwnerUUID(uuid);
-                nillo.setTame(true);
+                nillo.setTame(true, true);
             }
         }
         return nillo;

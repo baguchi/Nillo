@@ -1,5 +1,5 @@
 {
-  "type": "forge:add_spawns",
+  "type": "neoforge:add_spawns",
   "biomes": "#nillo:fire_nillo_spawnable",
   "spawners": {
     "type": "nillo:fire_nillo",

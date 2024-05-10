@@ -2,11 +2,12 @@ package bagu_chan.nillo;
 
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModItems;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,17 +18,14 @@ public class NilloCore {
     public static final String MODID = "nillo";
     public static final String NETWORK_PROTOCOL = "2";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
-    public NilloCore() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public NilloCore(ModContainer modContainer, IEventBus modBus) {
+        IEventBus forgeBus = NeoForge.EVENT_BUS;
 
-
-        ModItems.ITEMS.register(modEventBus);
-        ModEntities.ENTITIES_REGISTRY.register(modEventBus);
+        ModItems.ITEMS.register(modBus);
+        ModEntities.ENTITIES_REGISTRY.register(modBus);
         // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
+        modBus.addListener(this::commonSetup);
 
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
 

@@ -3,6 +3,7 @@ package bagu_chan.nillo.client.render;
 import bagu_chan.nillo.NilloCore;
 import bagu_chan.nillo.client.ModModelLayers;
 import bagu_chan.nillo.client.model.WindNilloModel;
+import bagu_chan.nillo.client.render.layer.NilloArmorLayer;
 import bagu_chan.nillo.entity.WindNillo;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -13,6 +14,7 @@ public class WindNilloRenderer extends MobRenderer<WindNillo, WindNilloModel<Win
 
     public WindNilloRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new WindNilloModel<>(p_174304_.bakeLayer(ModModelLayers.WIND_NILLO)), 0.3F);
+        this.addLayer(new NilloArmorLayer<>(this, p_174304_.getModelSet()));
     }
 
     @Override

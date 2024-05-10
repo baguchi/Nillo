@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "minecraft:leather_helmet"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    "H",
+    "L",
+    "L"
+  ],
+  "result": {
+    "count": 1,
+    "id": "nillo:leather_nillo_armor"
+  }
+}

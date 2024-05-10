@@ -3,6 +3,7 @@ package bagu_chan.nillo.client.render;
 import bagu_chan.nillo.NilloCore;
 import bagu_chan.nillo.client.ModModelLayers;
 import bagu_chan.nillo.client.model.NilloModel;
+import bagu_chan.nillo.client.render.layer.NilloArmorLayer;
 import bagu_chan.nillo.entity.FireNillo;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -13,6 +14,7 @@ public class FireNilloRenderer extends MobRenderer<FireNillo, NilloModel<FireNil
 
     public FireNilloRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new NilloModel<>(p_174304_.bakeLayer(ModModelLayers.NILLO)), 0.3F);
+        this.addLayer(new NilloArmorLayer<>(this, p_174304_.getModelSet()));
     }
 
     @Override

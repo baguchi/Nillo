@@ -27,7 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -51,8 +51,7 @@ public class AquaNillo extends Nillo {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SitWaterWhenOrderedToGoal(this));
-
-        this.goalSelector.addGoal(2, new AttackGoal(this));
+        this.goalSelector.addGoal(2, new AttackGoal(this, 1.25F, 8, 12));
         this.goalSelector.addGoal(3, new FollowOwnerWaterGoal(this, 1.0, 10.0F, 2.0F, false));
 
         this.goalSelector.addGoal(4, new BreedGoal(this, 0.75D));
@@ -146,7 +145,7 @@ public class AquaNillo extends Nillo {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {
                 nillo.setOwnerUUID(uuid);
-                nillo.setTame(true);
+                nillo.setTame(true, true);
             }
         }
         return nillo;

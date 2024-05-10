@@ -21,7 +21,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,16 +31,17 @@ public class WindNillo extends Nillo {
     public WindNillo(EntityType<? extends WindNillo> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
         this.moveControl = new FlyingMoveControl(this, 10, false);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.COCOA, -1.0F);
+        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.COCOA, -1.0F);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(2, new AttackGoal(this));
+        this.goalSelector.addGoal(2, new AttackGoal(this, 1.25F, 8, 12));
+
         this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
 
         this.goalSelector.addGoal(4, new BreedGoal(this, 0.75D));
@@ -106,7 +107,7 @@ public class WindNillo extends Nillo {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {
                 nillo.setOwnerUUID(uuid);
-                nillo.setTame(true);
+                nillo.setTame(true, true);
             }
         }
         return nillo;

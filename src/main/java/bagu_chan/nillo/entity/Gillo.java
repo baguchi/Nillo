@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class Gillo extends Nillo{
     private static final UUID SPEED_MODIFIER_ATTACKING_UUID = UUID.fromString("d9c0fd1b-7f7f-1bf1-d6fb-44264f7ec5cd");
-    private static final AttributeModifier SPEED_MODIFIER_ATTACKING = new AttributeModifier(SPEED_MODIFIER_ATTACKING_UUID, "Attacking speed boost", 0.05D, AttributeModifier.Operation.ADDITION);
+    private static final AttributeModifier SPEED_MODIFIER_ATTACKING = new AttributeModifier(SPEED_MODIFIER_ATTACKING_UUID, "Attacking speed boost", 0.05D, AttributeModifier.Operation.ADD_VALUE);
 
 
     public Gillo(EntityType<? extends Nillo> p_21683_, Level p_21684_) {
@@ -131,7 +131,7 @@ public class Gillo extends Nillo{
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {
                 nillo.setOwnerUUID(uuid);
-                nillo.setTame(true);
+                nillo.setTame(true, true);
             }
         }
         return nillo;
