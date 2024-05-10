@@ -25,6 +25,7 @@ public class TabEvents {
             event.accept(ModItems.WIND_AMULET.get());
             event.accept(ModItems.EARTH_AMULET.get());
             event.accept(ModItems.LEATHER_NILLO_ARMOR.get());
+            event.accept(ModItems.ARMADILLO_NILLO_ARMOR.get());
         }
     }
 }

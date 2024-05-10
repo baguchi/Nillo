@@ -26,4 +26,5 @@ public class ModItems {
     public static final Supplier<Item> EARTH_AMULET = ITEMS.register("earth_amulet", () -> new AmuletItem((new Item.Properties())));
     public static final Supplier<Item> WIND_AMULET = ITEMS.register("wind_amulet", () -> new AmuletItem((new Item.Properties())));
     public static final Supplier<Item> LEATHER_NILLO_ARMOR = ITEMS.register("leather_nillo_armor", () -> new NilloArmorItem(ArmorMaterials.LEATHER, AnimalArmorItem.BodyType.CANINE, true, new Item.Properties().stacksTo(1).durability(86)));
+    public static final Supplier<Item> ARMADILLO_NILLO_ARMOR = ITEMS.register("armadillo_nillo_armor", () -> new NilloArmorItem(ArmorMaterials.ARMADILLO, AnimalArmorItem.BodyType.CANINE, true, new Item.Properties().stacksTo(1).durability(64)));
 }

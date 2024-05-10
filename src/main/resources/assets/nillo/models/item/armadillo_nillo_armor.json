@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "nillo:item/armadillo_nillo_armor",
+    "layer1": "nillo:item/armadillo_nillo_armor_overlay"
+  }
+}

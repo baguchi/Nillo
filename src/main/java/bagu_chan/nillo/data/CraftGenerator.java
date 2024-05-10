@@ -18,13 +18,20 @@ public class CraftGenerator extends RecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput consumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.LEATHER_NILLO_ARMOR.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.LEATHER_NILLO_ARMOR.get(), 1)
                 .pattern("H")
                 .pattern("L")
                 .pattern("L")
                 .define('H', Items.LEATHER_HELMET)
                 .define('L', Items.LEATHER)
                 .unlockedBy("has_item", has(Items.LEATHER))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.ARMADILLO_NILLO_ARMOR.get(), 1)
+                .pattern("AAA")
+                .pattern("AAA")
+                .pattern(" A ")
+                .define('A', Items.ARMADILLO_SCUTE)
+                .unlockedBy("has_item", has(Items.ARMADILLO_SCUTE))
                 .save(consumer);
     }
 

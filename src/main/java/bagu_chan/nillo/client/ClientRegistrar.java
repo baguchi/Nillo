@@ -43,5 +43,9 @@ public class ClientRegistrar {
                 (p_329705_, p_329706_) -> p_329706_ > 0 ? -1 : DyedItemColor.getOrDefault(p_329705_, -6265536),
                 ModItems.LEATHER_NILLO_ARMOR.get()
         );
+        event.register(
+                (p_329705_, p_329706_) -> p_329706_ > 0 ? DyedItemColor.getOrDefault(p_329705_, -6265536) : -1,
+                ModItems.ARMADILLO_NILLO_ARMOR.get()
+        );
     }
 }
