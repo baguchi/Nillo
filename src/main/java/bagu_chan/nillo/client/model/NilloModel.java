@@ -56,7 +56,11 @@ public class NilloModel<T extends Nillo> extends HierarchicalModel<T> {
         if(this.young){
             this.applyStatic(NilloAnimations.baby);
         }
-        this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
+        if (entity.isInSittingPose()) {
+            this.applyStatic(NilloAnimations.sit);
+        } else {
+            this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
+        }
         this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks);
     }
 

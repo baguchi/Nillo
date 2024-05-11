@@ -52,18 +52,22 @@ public class AquaNilloModel<T extends AquaNillo> extends NilloModel<T> {
             this.applyStatic(NilloAnimations.baby);
         }
         boolean flag = limbSwing > 1.0E-5F || entity.getXRot() != entity.xRotO || entity.getYRot() != entity.yRotO;
-        if (entity.isInWaterOrBubble()) {
-            if (flag) {
-                this.setupSwimmingAnimation(ageInTicks, headPitch);
-            } else {
-                this.setupWaterHoveringAnimation(ageInTicks);
-            }
+        if (entity.isInSittingPose()) {
+            this.applyStatic(NilloAnimations.sit);
         } else {
-            if (entity.onGround()) {
+            if (entity.isInWaterOrBubble()) {
                 if (flag) {
-                    this.setupGroundCrawlingAnimation(ageInTicks, netHeadYaw);
+                    this.setupSwimmingAnimation(ageInTicks, headPitch);
                 } else {
-                    this.setupLayStillOnGroundAnimation(ageInTicks, netHeadYaw);
+                    this.setupWaterHoveringAnimation(ageInTicks);
+                }
+            } else {
+                if (entity.onGround()) {
+                    if (flag) {
+                        this.setupGroundCrawlingAnimation(ageInTicks, netHeadYaw);
+                    } else {
+                        this.setupLayStillOnGroundAnimation(ageInTicks, netHeadYaw);
+                    }
                 }
             }
         }

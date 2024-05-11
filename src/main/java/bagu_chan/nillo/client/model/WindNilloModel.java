@@ -52,10 +52,14 @@ public class WindNilloModel<T extends Nillo> extends NilloModel<T> {
         if (this.young) {
             this.applyStatic(NilloAnimations.baby);
         }
-        if (entity.onGround()) {
-            this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
+        if (entity.isInSittingPose()) {
+            this.applyStatic(NilloAnimations.sit);
         } else {
-            this.animateWalk(NilloAnimations.flying, ageInTicks, 1.0F, 1.0F, 1.5F);
+            if (entity.onGround()) {
+                this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
+            } else {
+                this.animateWalk(NilloAnimations.flying, ageInTicks, 1.0F, 1.0F, 1.5F);
+            }
         }
         this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks);
     }
