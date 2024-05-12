@@ -64,7 +64,7 @@ public class NilloArmorLayer<T extends Nillo, M extends NilloModel<T>> extends R
 
     private void maybeRenderColoredLayer(PoseStack p_330741_, MultiBufferSource p_330339_, int p_332179_, ItemStack p_331250_, AnimalArmorItem p_330867_) {
         if (p_331250_.is(ItemTags.DYEABLE)) {
-            int i = DyedItemColor.getOrDefault(p_331250_, -6265536);
+            int i = DyedItemColor.getOrDefault(p_331250_, 0);
             if (FastColor.ARGB32.alpha(i) == 0) {
                 return;
             }
