@@ -21,13 +21,13 @@ modId = "nillo" #mandatory
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version = "${file.jarVersion}" #mandatory
 # A display name for the mod
-displayName = "Nillo" #mandatory
+displayName = "FinzWild Friends" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="nillo.png" #optional
+logoFile = "logo.png" #optional
 # A text field displayed in the mod UI
 credits="Thanks IlyyMira for original Nillo!" #optional
 # A text field displayed in the mod UI
