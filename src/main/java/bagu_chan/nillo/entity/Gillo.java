@@ -1,9 +1,11 @@
 package bagu_chan.nillo.entity;
 
+import bagu_chan.nillo.NilloCore;
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.item.AmuletItem;
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModTags;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,8 +27,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class Gillo extends Nillo{
-    private static final UUID SPEED_MODIFIER_ATTACKING_UUID = UUID.fromString("d9c0fd1b-7f7f-1bf1-d6fb-44264f7ec5cd");
-    private static final AttributeModifier SPEED_MODIFIER_ATTACKING = new AttributeModifier(SPEED_MODIFIER_ATTACKING_UUID, "Attacking speed boost", 0.05D, AttributeModifier.Operation.ADD_VALUE);
+    private static final ResourceLocation SPEED_MODIFIER_ATTACKING_UUID = ResourceLocation.fromNamespaceAndPath(NilloCore.MODID, "nillo.attack_speed");
+    private static final AttributeModifier SPEED_MODIFIER_ATTACKING = new AttributeModifier(SPEED_MODIFIER_ATTACKING_UUID, 0.05D, AttributeModifier.Operation.ADD_VALUE);
 
 
     public Gillo(EntityType<? extends Nillo> p_21683_, Level p_21684_) {
@@ -109,10 +111,10 @@ public class Gillo extends Nillo{
     protected void customServerAiStep() {
         AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
         if (this.isAggressive()) {
-            if (!attributeinstance.hasModifier(SPEED_MODIFIER_ATTACKING)) {
+            if (!attributeinstance.hasModifier(SPEED_MODIFIER_ATTACKING_UUID)) {
                 attributeinstance.addTransientModifier(SPEED_MODIFIER_ATTACKING);
             }
-        } else if (attributeinstance.hasModifier(SPEED_MODIFIER_ATTACKING)) {
+        } else if (attributeinstance.hasModifier(SPEED_MODIFIER_ATTACKING_UUID)) {
             attributeinstance.removeModifier(SPEED_MODIFIER_ATTACKING);
         }
 

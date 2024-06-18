@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class EarthNilloRenderer extends MobRenderer<EarthNillo, EarthNilloModel<EarthNillo>> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(NilloCore.MODID, "textures/entity/nillo/earth_nillo.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(NilloCore.MODID, "textures/entity/nillo/earth_nillo.png");
 
     public EarthNilloRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new EarthNilloModel<>(p_174304_.bakeLayer(ModModelLayers.EARTH_NILLO)), 0.3F);

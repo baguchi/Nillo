@@ -42,7 +42,7 @@ public class WindNillo extends Nillo {
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new AttackGoal(this, 1.25F, 8, 12));
 
-        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
 
         this.goalSelector.addGoal(4, new BreedGoal(this, 0.75D));
         this.goalSelector.addGoal(5, new TemptGoal(this, 1.1D, this.getFoodItems(), false));

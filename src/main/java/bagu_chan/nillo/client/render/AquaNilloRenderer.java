@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class AquaNilloRenderer extends MobRenderer<AquaNillo, AquaNilloModel<AquaNillo>> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(NilloCore.MODID, "textures/entity/nillo/aqua_nillo.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(NilloCore.MODID, "textures/entity/nillo/aqua_nillo.png");
 
     public AquaNilloRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new AquaNilloModel<>(p_174304_.bakeLayer(ModModelLayers.AQUA_NILLO)), 0.3F);

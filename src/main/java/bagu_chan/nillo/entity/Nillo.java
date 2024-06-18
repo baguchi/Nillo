@@ -43,6 +43,7 @@ import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -185,7 +186,7 @@ public class Nillo extends TamableAnimal {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(2, new AttackGoal(this, 1.25F, 8, 12));
-        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
 
         this.goalSelector.addGoal(4, new BreedGoal(this, 0.75D));
         this.goalSelector.addGoal(5, new TemptGoal(this, 1.1D, this.getFoodItems(), false));
@@ -288,7 +289,7 @@ public class Nillo extends TamableAnimal {
                 } else if (itemstack.is(Items.SHEARS)
                         && this.isOwnedBy(p_30412_)
                         && this.hasArmor()
-                        && (!EnchantmentHelper.hasBindingCurse(this.getBodyArmorItem()) || p_30412_.isCreative())) {
+                        && (!EnchantmentHelper.has(this.getBodyArmorItem(), EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE) || p_30412_.isCreative())) {
                     itemstack.hurtAndBreak(1, p_30412_, getSlotForHand(p_30413_));
                     this.playSound(SoundEvents.ARMOR_UNEQUIP_WOLF);
                     ItemStack itemstack1 = this.getBodyArmorItem();

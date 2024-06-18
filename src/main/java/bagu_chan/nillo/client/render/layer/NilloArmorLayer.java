@@ -25,11 +25,11 @@ public class NilloArmorLayer<T extends Nillo, M extends NilloModel<T>> extends R
     private final NilloModel<T> model;
     private static final Map<Crackiness.Level, ResourceLocation> ARMOR_CRACK_LOCATIONS = Map.of(
             Crackiness.Level.LOW,
-            new ResourceLocation("textures/entity/nillo/nillo_armor_crackiness_low.png"),
+            ResourceLocation.parse("textures/entity/nillo/nillo_armor_crackiness_low.png"),
             Crackiness.Level.MEDIUM,
-            new ResourceLocation("textures/entity/nillo/nillo_armor_crackiness_medium.png"),
+            ResourceLocation.parse("textures/entity/nillo/nillo_armor_crackiness_medium.png"),
             Crackiness.Level.HIGH,
-            new ResourceLocation("textures/entity/nillo/nillo_armor_crackiness_high.png")
+            ResourceLocation.parse("textures/entity/nillo/nillo_armor_crackiness_high.png")
     );
 
     public NilloArmorLayer(RenderLayerParent<T, M> p_316639_, EntityModelSet p_316756_) {
@@ -54,7 +54,7 @@ public class NilloArmorLayer<T extends Nillo, M extends NilloModel<T>> extends R
             if (itemstack.getItem() instanceof AnimalArmorItem animalarmoritem && animalarmoritem.getBodyType() == AnimalArmorItem.BodyType.CANINE) {
                 this.getParentModel().copyPropertiesTo(this.model);
                 VertexConsumer vertexconsumer = p_316832_.getBuffer(RenderType.entityCutoutNoCull(animalarmoritem.getTexture()));
-                this.model.renderToBuffer(p_316608_, vertexconsumer, p_316312_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.model.renderToBuffer(p_316608_, vertexconsumer, p_316312_, OverlayTexture.NO_OVERLAY);
                 this.maybeRenderColoredLayer(p_316608_, p_316832_, p_316312_, itemstack, animalarmoritem);
                 this.maybeRenderCracks(p_316608_, p_316832_, p_316312_, itemstack);
                 return;
@@ -79,7 +79,8 @@ public class NilloArmorLayer<T extends Nillo, M extends NilloModel<T>> extends R
             float f2 = (float)FastColor.ARGB32.blue(i) / 255.0F;
             this.model
                     .renderToBuffer(
-                            p_330741_, p_330339_.getBuffer(RenderType.entityCutoutNoCull(resourcelocation)), p_332179_, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F
+                            p_330741_, p_330339_.getBuffer(RenderType.entityCutoutNoCull(resourcelocation)), p_332179_, OverlayTexture.NO_OVERLAY,
+                            FastColor.ARGB32.opaque(i)
                     );
         }
     }
@@ -89,7 +90,7 @@ public class NilloArmorLayer<T extends Nillo, M extends NilloModel<T>> extends R
         if (crackiness$level != Crackiness.Level.NONE) {
             ResourceLocation resourcelocation = ARMOR_CRACK_LOCATIONS.get(crackiness$level);
             VertexConsumer vertexconsumer = p_331637_.getBuffer(RenderType.entityTranslucent(resourcelocation));
-            this.model.renderToBuffer(p_331222_, vertexconsumer, p_330931_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.model.renderToBuffer(p_331222_, vertexconsumer, p_330931_, OverlayTexture.NO_OVERLAY);
         }
     }
 }

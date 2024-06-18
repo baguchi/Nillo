@@ -2,7 +2,7 @@
   "values": [
     "#minecraft:is_taiga",
     "#minecraft:is_forest",
-    "#forge:is_desert",
+    "#c:is_desert",
     "minecraft:plains"
   ]
 }

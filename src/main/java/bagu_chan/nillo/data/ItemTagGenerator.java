@@ -20,6 +20,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
     @SuppressWarnings("unchecked")
     @Override
     protected void addTags(HolderLookup.Provider p_256380_) {
+        this.tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(ModItems.LEATHER_NILLO_ARMOR.get()).add(ModItems.ARMADILLO_NILLO_ARMOR.get());
+        this.tag(ItemTags.DURABILITY_ENCHANTABLE).add(ModItems.LEATHER_NILLO_ARMOR.get()).add(ModItems.ARMADILLO_NILLO_ARMOR.get());
         this.tag(ItemTags.DYEABLE).add(ModItems.LEATHER_NILLO_ARMOR.get()).add(ModItems.ARMADILLO_NILLO_ARMOR.get());
         this.tag(ItemTags.FREEZE_IMMUNE_WEARABLES).add(ModItems.LEATHER_NILLO_ARMOR.get());
         this.tag(ModTags.Items.AMULETS).add(ModItems.AQUA_AMULET.get()).add(ModItems.FIRE_AMULET.get()).add(ModItems.WIND_AMULET.get()).add(ModItems.EARTH_AMULET.get());

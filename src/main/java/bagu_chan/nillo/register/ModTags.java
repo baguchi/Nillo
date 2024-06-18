@@ -13,14 +13,14 @@ public class ModTags {
         public static final TagKey<EntityType<?>> GILLO_HUNT_TARGETS = create("gillo_hunt_targets");
 
         private static TagKey<EntityType<?>> create(String p_203849_) {
-            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(NilloCore.MODID, p_203849_));
+            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(NilloCore.MODID, p_203849_));
         }
     }
 
     public static class Items {
         public static final TagKey<Item> AMULETS = create("amulets");
         private static TagKey<Item> create(String p_203849_) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(NilloCore.MODID, p_203849_));
+            return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(NilloCore.MODID, p_203849_));
         }
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class WindNilloRenderer extends MobRenderer<WindNillo, WindNilloModel<WindNillo>> {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(NilloCore.MODID, "textures/entity/nillo/wind_nillo.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(NilloCore.MODID, "textures/entity/nillo/wind_nillo.png");
 
     public WindNilloRenderer(EntityRendererProvider.Context p_174304_) {
         super(p_174304_, new WindNilloModel<>(p_174304_.bakeLayer(ModModelLayers.WIND_NILLO)), 0.3F);

@@ -5,8 +5,6 @@ package bagu_chan.nillo.client.model;// Made with Blockbench 4.7.4
 
 import bagu_chan.nillo.client.animation.NilloAnimations;
 import bagu_chan.nillo.entity.Gillo;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -67,11 +65,6 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 			this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
 		}
 		this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks, entity.isAggressive() ? 1.2F : 1F);
-	}
-
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override

@@ -12,8 +12,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -52,19 +50,21 @@ public class NilloArmorItem extends AnimalArmorItem {
                     ItemAttributeModifiers.Builder itemattributemodifiers$builder = ItemAttributeModifiers.builder();
                     EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(Type.BODY.getSlot());
                     UUID uuid = ARMOR_MODIFIER_UUID_PER_TYPE.get(Type.BODY);
+                    ResourceLocation resourcelocation2 = ResourceLocation.withDefaultNamespace("armor." + Type.BODY.getName());
+
                     itemattributemodifiers$builder.add(
-                            Attributes.ARMOR, new AttributeModifier(uuid, "Armor modifier", (double) i, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
+                            Attributes.ARMOR, new AttributeModifier(resourcelocation2, (double) i, AttributeModifier.Operation.ADD_VALUE), equipmentslotgroup
                     );
                     itemattributemodifiers$builder.add(
                             Attributes.ARMOR_TOUGHNESS,
-                            new AttributeModifier(uuid, "Armor toughness", (double) f, AttributeModifier.Operation.ADD_VALUE),
+                            new AttributeModifier(resourcelocation2, (double) f, AttributeModifier.Operation.ADD_VALUE),
                             equipmentslotgroup
                     );
                     float f1 = armorMaterial.value().knockbackResistance() * 2;
                     if (f1 > 0.0F) {
                         itemattributemodifiers$builder.add(
                                 Attributes.KNOCKBACK_RESISTANCE,
-                                new AttributeModifier(uuid, "Armor knockback resistance", (double) f1, AttributeModifier.Operation.ADD_VALUE),
+                                new AttributeModifier(resourcelocation2, (double) f1, AttributeModifier.Operation.ADD_VALUE),
                                 equipmentslotgroup
                         );
                     }
@@ -94,10 +94,5 @@ public class NilloArmorItem extends AnimalArmorItem {
     @Override
     public boolean isEnchantable(ItemStack p_341697_) {
         return true;
-    }
-
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return enchantment == Enchantments.MENDING || enchantment == Enchantments.UNBREAKING || enchantment == Enchantments.FIRE_PROTECTION || enchantment == Enchantments.BLAST_PROTECTION || enchantment == Enchantments.PROJECTILE_PROTECTION || enchantment == Enchantments.PROTECTION || enchantment == Enchantments.FEATHER_FALLING;
     }
 }
