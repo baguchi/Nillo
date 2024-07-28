@@ -6,12 +6,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
@@ -41,12 +40,12 @@ public class ModEntities {
     }
 
     @SubscribeEvent
-    public static void registerSpawnPlacement(SpawnPlacementRegisterEvent event) {
-        event.register(NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(WIND_NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(AQUA_NILLO.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AquaNillo::checkAquaNilloSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(FIRE_NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(EARTH_NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
-        event.register(GILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, SpawnPlacementRegisterEvent.Operation.REPLACE);
+    public static void registerSpawnPlacement(RegisterSpawnPlacementsEvent event) {
+        event.register(NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(WIND_NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(AQUA_NILLO.get(), SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AquaNillo::checkAquaNilloSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(FIRE_NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(EARTH_NILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(GILLO.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Nillo::checkNilloSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }
