@@ -5,10 +5,7 @@ import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -57,13 +54,13 @@ public class WindNillo extends Nillo {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, living -> {
+        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, (living, level) -> {
             return living.getType().is(ModTags.EntityTypes.NILLO_HUNT_TARGETS);
         }));
     }
 
     public static AttributeSupplier.Builder createAttributeMap() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.2F).add(Attributes.FLYING_SPEED, (double) 0.12F).add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.FOLLOW_RANGE, 18.0D).add(Attributes.ATTACK_DAMAGE, 2.0F);
+        return TamableAnimal.createAnimalAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.2F).add(Attributes.FLYING_SPEED, (double) 0.12F).add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.FOLLOW_RANGE, 18.0D).add(Attributes.ATTACK_DAMAGE, 2.0F);
     }
 
     protected PathNavigation createNavigation(Level p_29417_) {
@@ -102,7 +99,7 @@ public class WindNillo extends Nillo {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        WindNillo nillo = ModEntities.WIND_NILLO.get().create(p_146743_);
+        WindNillo nillo = ModEntities.WIND_NILLO.get().create(p_146743_, EntitySpawnReason.BREEDING);
         if (nillo != null) {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {

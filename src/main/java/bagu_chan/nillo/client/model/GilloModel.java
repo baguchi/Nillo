@@ -4,13 +4,13 @@ package bagu_chan.nillo.client.model;// Made with Blockbench 4.7.4
 
 
 import bagu_chan.nillo.client.animation.NilloAnimations;
-import bagu_chan.nillo.entity.Gillo;
-import net.minecraft.client.model.HierarchicalModel;
+import bagu_chan.nillo.client.render.state.NilloRenderState;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
+public class GilloModel<T extends NilloRenderState> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	private final ModelPart realRoot;
 	private final ModelPart root;
@@ -18,6 +18,7 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 	private final ModelPart head;
 
 	public GilloModel(ModelPart root) {
+		super(root);
 		this.realRoot = root;
 		this.root = root.getChild("root");
 		this.body = this.root.getChild("body");
@@ -52,23 +53,18 @@ public class GilloModel<T extends Gillo> extends HierarchicalModel<T> {
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.head.xRot = headPitch * ((float)Math.PI / 180F);
-		this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
-		if(this.young){
+	public void setupAnim(T entity) {
+		super.setupAnim(entity);
+		this.head.xRot = entity.xRot * ((float) Math.PI / 180F);
+		this.head.yRot = entity.yRot * ((float) Math.PI / 180F);
+		if (entity.isBaby) {
 			this.applyStatic(NilloAnimations.baby);
 		}
-		if (entity.isInSittingPose()) {
+		if (entity.isSitting) {
 			this.applyStatic(NilloAnimations.sit);
 		} else {
-			this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
+			this.animateWalk(NilloAnimations.walk, entity.walkAnimationPos, entity.walkAnimationPos, 1.0F, 1.5F);
 		}
-		this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks, entity.isAggressive() ? 1.2F : 1F);
-	}
-
-	@Override
-	public ModelPart root() {
-		return this.realRoot;
+		this.animate(entity.attackAnimationState, NilloAnimations.attack, entity.ageInTicks, entity.isAggressive ? 1.2F : 1F);
 	}
 }

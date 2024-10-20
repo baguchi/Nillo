@@ -4,13 +4,13 @@ package bagu_chan.nillo.client.model;// Made with Blockbench 4.7.4
 
 
 import bagu_chan.nillo.client.animation.NilloAnimations;
-import bagu_chan.nillo.entity.Nillo;
-import net.minecraft.client.model.HierarchicalModel;
+import bagu_chan.nillo.client.render.state.NilloRenderState;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class NilloModel<T extends Nillo> extends HierarchicalModel<T> {
+public class NilloModel<T extends NilloRenderState> extends EntityModel<T> {
     public final ModelPart realRoot;
     public final ModelPart root;
     public final ModelPart body;
@@ -18,6 +18,7 @@ public class NilloModel<T extends Nillo> extends HierarchicalModel<T> {
     public final ModelPart head;
 
     public NilloModel(ModelPart root) {
+        super(root);
         this.realRoot = root;
         this.root = root.getChild("root");
         this.body = this.root.getChild("body");
@@ -70,33 +71,27 @@ public class NilloModel<T extends Nillo> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.head.xRot = headPitch * ((float)Math.PI / 180F);
-        this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
+    public void setupAnim(T entity) {
+        super.setupAnim(entity);
+        this.head.xRot = entity.xRot * ((float) Math.PI / 180F);
+        this.head.yRot = entity.yRot * ((float) Math.PI / 180F);
         this.applyStatic(NilloAnimations.scaled);
-        if(this.young){
+        if (entity.isBaby) {
             this.applyStatic(NilloAnimations.baby);
         }
-        if (entity.isInSittingPose()) {
+        if (entity.isSitting) {
             this.applyStatic(NilloAnimations.sit);
         } else {
-            this.animateWalk(NilloAnimations.walk, limbSwing, limbSwingAmount, 1.0F, 1.5F);
+            this.animateWalk(NilloAnimations.walk, entity.walkAnimationPos, entity.walkAnimationSpeed, 1.0F, 1.5F);
         }
-        this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks);
+        this.animate(entity.attackAnimationState, NilloAnimations.attack, entity.ageInTicks);
     }
 
 
     public void copyPropertiesTo(NilloModel<T> p_102873_) {
-        super.copyPropertiesTo(p_102873_);
         p_102873_.head.copyFrom(this.head);
         p_102873_.body.copyFrom(this.body);
         p_102873_.root.copyFrom(this.root);
         p_102873_.tail.copyFrom(this.tail);
-    }
-
-    @Override
-    public ModelPart root() {
-        return this.realRoot;
     }
 }

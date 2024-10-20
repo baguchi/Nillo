@@ -3,6 +3,9 @@ package bagu_chan.nillo.register;
 import bagu_chan.nillo.NilloCore;
 import bagu_chan.nillo.entity.*;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -25,8 +28,9 @@ public class ModEntities {
     public static final Supplier<EntityType<FireNillo>> FIRE_NILLO = ENTITIES_REGISTRY.register("fire_nillo", () -> EntityType.Builder.of(FireNillo::new, MobCategory.CREATURE).sized(0.6F, 0.45F).eyeHeight(0.45F * 0.5F).build(prefix("fire_nillo")));
     public static final Supplier<EntityType<EarthNillo>> EARTH_NILLO = ENTITIES_REGISTRY.register("earth_nillo", () -> EntityType.Builder.of(EarthNillo::new, MobCategory.CREATURE).sized(0.6F, 0.45F).eyeHeight(0.45F * 0.5F).build(prefix("earth_nillo")));
     public static final Supplier<EntityType<Gillo>> GILLO = ENTITIES_REGISTRY.register("gillo", () -> EntityType.Builder.of(Gillo::new, MobCategory.CREATURE).sized(1.0F, 1.0F).eyeHeight(0.5F).build(prefix("gillo")));
-    private static String prefix(String path) {
-        return NilloCore.MODID + "." + path;
+
+    private static ResourceKey<EntityType<?>> prefix(String path) {
+        return ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(NilloCore.MODID, path));
     }
 
     @SubscribeEvent

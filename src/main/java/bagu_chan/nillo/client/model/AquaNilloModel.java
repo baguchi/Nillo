@@ -3,16 +3,14 @@ package bagu_chan.nillo.client.model;// Made with Blockbench 4.9.3
 // Paste this class into your mod and generate all required imports
 
 import bagu_chan.nillo.client.animation.NilloAnimations;
-import bagu_chan.nillo.entity.AquaNillo;
+import bagu_chan.nillo.client.render.state.AquaNilloRenderState;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
 
-import java.util.Map;
-
-public class AquaNilloModel<T extends AquaNillo> extends NilloModel<T> {
+public class AquaNilloModel<T extends AquaNilloRenderState> extends NilloModel<T> {
 
     public AquaNilloModel(ModelPart root) {
         super(root);
@@ -43,54 +41,27 @@ public class AquaNilloModel<T extends AquaNillo> extends NilloModel<T> {
     }
 
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.setupInitialAnimationValues(entity, netHeadYaw, headPitch);
-
-        this.applyStatic(NilloAnimations.scaled);
-        if (this.young) {
+    public void setupAnim(T entity) {
+        super.setupAnim(entity);
+        float f1 = entity.inWaterFactor;
+        float f2 = entity.onGroundFactor;
+        float f3 = entity.movingFactor;
+        float f4 = 1.0F - f3;
+        float f5 = 1.0F - Math.min(f2, f3);
+        this.body.yRot = this.body.yRot + entity.yRot * (float) (Math.PI / 180.0);
+        if (entity.isBaby) {
             this.applyStatic(NilloAnimations.baby);
         }
-        if (entity.isInSittingPose()) {
+        if (entity.isSitting) {
             this.applyStatic(NilloAnimations.sit);
         } else {
-            boolean flag = limbSwing > 1.0E-5F || entity.getXRot() != entity.xRotO || entity.getYRot() != entity.yRotO;
-            if (entity.isInWaterOrBubble()) {
-                if (flag) {
-                    this.setupSwimmingAnimation(ageInTicks, headPitch);
-                } else {
-                    this.setupWaterHoveringAnimation(ageInTicks);
-                }
-            } else {
-                if (entity.onGround()) {
-                    if (flag) {
-                        this.setupGroundCrawlingAnimation(ageInTicks, netHeadYaw);
-                    } else {
-                        this.setupLayStillOnGroundAnimation(ageInTicks, netHeadYaw);
-                    }
-                }
-            }
+            this.setupSwimmingAnimation(entity.ageInTicks, entity.xRot, Math.min(f3, f1));
+            this.setupWaterHoveringAnimation(entity.ageInTicks, Math.min(f4, f1));
+            this.setupGroundCrawlingAnimation(entity.ageInTicks, Math.min(f3, f2));
+            this.setupLayStillOnGroundAnimation(entity.ageInTicks, Math.min(f4, f2));
         }
-        this.animate(entity.attackAnimationState, NilloAnimations.attack, ageInTicks);
-    }
-
-    private void saveAnimationValues(T p_170389_) {
-        Map<String, Vector3f> map = p_170389_.getModelRotationValues();
-        map.put("body", this.getRotationVector(this.body));
-        map.put("head", this.getRotationVector(this.head));
-        map.put("tail", this.getRotationVector(this.tail));
-    }
-
-    private void setupInitialAnimationValues(T p_170391_, float p_170392_, float p_170393_) {
-        Map<String, Vector3f> map = p_170391_.getModelRotationValues();
-        if (map.isEmpty()) {
-            this.body.setRotation(p_170393_ * ((float) Math.PI / 180F), p_170392_ * ((float) Math.PI / 180F), 0.0F);
-            this.head.setRotation(0.0F, 0.0F, 0.0F);
-            this.tail.setRotation(0.0F, 0.0F, 0.0F);
-        } else {
-            this.setRotationFromVector(this.body, map.get("body"));
-            this.setRotationFromVector(this.head, map.get("head"));
-        }
+        this.applyStatic(NilloAnimations.scaled);
+        this.animate(entity.attackAnimationState, NilloAnimations.attack, entity.ageInTicks);
 
     }
 
@@ -123,27 +94,30 @@ public class AquaNilloModel<T extends AquaNillo> extends NilloModel<T> {
         this.body.zRot = this.lerpTo(this.body.zRot, 0.0F);
     }
 
-    private void setupWaterHoveringAnimation(float p_170373_) {
-        float f = p_170373_ * 0.075F;
-        float f1 = Mth.cos(f);
-        float f2 = Mth.sin(f) * 0.15F;
-        this.body.xRot = this.lerpTo(this.body.xRot, -0.15F + 0.075F * f1);
-        this.head.xRot = this.lerpTo(this.head.xRot, -this.body.xRot);
-        this.tail.yRot = this.lerpTo(this.tail.yRot, 0.5F * f1);
-        this.head.yRot = this.lerpTo(this.head.yRot, 0.0F);
-        this.head.zRot = this.lerpTo(this.head.zRot, 0.0F);
+    private void setupWaterHoveringAnimation(float p_170373_, float p_365132_) {
+        if (!(p_365132_ <= 1.0E-5F)) {
+            float f = p_170373_ * 0.075F;
+            float f1 = Mth.cos(f);
+            float f2 = Mth.sin(f) * 0.15F;
+            float f3 = (-0.15F + 0.075F * f1) * p_365132_;
+            this.body.xRot += f3;
+            this.body.y -= f2 * p_365132_;
+            this.head.xRot -= f3;
+            this.tail.yRot += 0.5F * f1 * p_365132_;
+        }
     }
 
-    private void setupSwimmingAnimation(float p_170423_, float p_170424_) {
-        float f = p_170423_ * 0.33F;
-        float f1 = Mth.sin(f);
-        float f2 = Mth.cos(f);
-        float f3 = 0.13F * f1;
-        this.body.xRot = this.lerpTo(0.1F, this.body.xRot, p_170424_ * ((float) Math.PI / 180F) + f3);
-        this.head.xRot = -f3 * 1.8F;
-        this.tail.yRot = this.lerpTo(this.tail.yRot, 0.3F * Mth.cos(f * 0.9F));
-        this.head.yRot = this.lerpTo(this.head.yRot, 0.0F);
-        this.head.zRot = this.lerpTo(this.head.zRot, 0.0F);
+    private void setupSwimmingAnimation(float p_170423_, float p_170424_, float p_361875_) {
+        if (!(p_361875_ <= 1.0E-5F)) {
+            float f = p_170423_ * 0.33F;
+            float f1 = Mth.sin(f);
+            float f2 = Mth.cos(f);
+            float f3 = 0.13F * f1;
+            this.body.xRot += (p_170424_ * (float) (Math.PI / 180.0) + f3) * p_361875_;
+            this.head.xRot -= f3 * 1.8F * p_361875_;
+            this.body.y -= 0.45F * f2 * p_361875_;
+            this.tail.yRot = this.tail.yRot + 0.3F * Mth.cos(f * 0.9F) * p_361875_;
+        }
     }
 
     private Vector3f getRotationVector(ModelPart p_254355_) {

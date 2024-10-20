@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "A": {
-      "item": "minecraft:armadillo_scute"
-    }
+    "A": "minecraft:armadillo_scute"
   },
   "pattern": [
     "AAA",

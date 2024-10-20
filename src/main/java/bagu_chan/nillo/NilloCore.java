@@ -2,11 +2,11 @@ package bagu_chan.nillo;
 
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModItems;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,11 +17,10 @@ public class NilloCore {
     public static final String MODID = "nillo";
     public static final String NETWORK_PROTOCOL = "2";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
-    public NilloCore(ModContainer modContainer, IEventBus modBus) {
-        IEventBus forgeBus = NeoForge.EVENT_BUS;
 
-        ModItems.ITEMS.register(modBus);
+    public NilloCore(ModContainer modContainer, Dist dist, IEventBus modBus) {
         ModEntities.ENTITIES_REGISTRY.register(modBus);
+        ModItems.ITEMS.register(modBus);
         // Register the commonSetup method for modloading
         modBus.addListener(this::commonSetup);
 

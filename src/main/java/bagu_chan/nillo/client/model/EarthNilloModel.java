@@ -2,12 +2,12 @@ package bagu_chan.nillo.client.model;// Made with Blockbench 4.9.3
 // Exported for Minecraft version 1.17 or later with Mojang mappings
 // Paste this class into your mod and generate all required imports
 
-import bagu_chan.nillo.entity.Nillo;
+import bagu_chan.nillo.client.render.state.NilloRenderState;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 
-public class EarthNilloModel<T extends Nillo> extends NilloModel<T> {
+public class EarthNilloModel<T extends NilloRenderState> extends NilloModel<T> {
 
     public EarthNilloModel(ModelPart root) {
         super(root);

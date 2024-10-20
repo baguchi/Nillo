@@ -5,10 +5,11 @@ import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.entity.goal.SitWaterWhenOrderedToGoal;
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModTags;
-import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.BinaryAnimator;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
@@ -29,24 +30,20 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
 
-import java.util.Map;
 import java.util.UUID;
 
 public class AquaNillo extends Nillo {
-    private final Map<String, Vector3f> modelRotationValues = Maps.newHashMap();
+    public final BinaryAnimator inWaterAnimator = new BinaryAnimator(10, Mth::easeInOutSine);
+    public final BinaryAnimator onGroundAnimator = new BinaryAnimator(10, Mth::easeInOutSine);
+    public final BinaryAnimator movingAnimator = new BinaryAnimator(10, Mth::easeInOutSine);
+
     public AquaNillo(EntityType<? extends AquaNillo> p_21683_, Level p_21684_) {
         super(p_21683_, p_21684_);
 
         this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.25F, 1.0F, true);
         this.lookControl = new SmoothSwimmingLookControl(this, 10);
     }
-
-    public Map<String, Vector3f> getModelRotationValues() {
-        return this.modelRotationValues;
-    }
-
 
     @Override
     protected void registerGoals() {
@@ -67,13 +64,13 @@ public class AquaNillo extends Nillo {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, living -> {
+        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, (living, level) -> {
             return living.getType().is(ModTags.EntityTypes.NILLO_HUNT_TARGETS);
         }));
     }
 
     public static AttributeSupplier.Builder createAttributeMap() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.3F).add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.FOLLOW_RANGE, 18.0D).add(Attributes.ATTACK_DAMAGE, 2.0F);
+        return TamableAnimal.createAnimalAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.3F).add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.FOLLOW_RANGE, 18.0D).add(Attributes.ATTACK_DAMAGE, 2.0F);
     }
 
     public boolean checkSpawnObstruction(LevelReader p_32829_) {
@@ -81,8 +78,8 @@ public class AquaNillo extends Nillo {
     }
 
 
-    public static boolean checkAquaNilloSpawnRules(EntityType<? extends AquaNillo> p_218991_, LevelAccessor p_218992_, MobSpawnType p_218993_, BlockPos p_218994_, RandomSource p_218995_) {
-        return (p_218992_.getDifficulty() != Difficulty.PEACEFUL && (p_218993_ == MobSpawnType.SPAWNER || p_218992_.getFluidState(p_218994_).is(FluidTags.WATER)) && p_218992_.getFluidState(p_218994_.below()).is(FluidTags.WATER));
+    public static boolean checkAquaNilloSpawnRules(EntityType<? extends AquaNillo> p_218991_, LevelAccessor p_218992_, EntitySpawnReason p_218993_, BlockPos p_218994_, RandomSource p_218995_) {
+        return (p_218992_.getDifficulty() != Difficulty.PEACEFUL && (p_218993_ == EntitySpawnReason.SPAWNER || p_218992_.getFluidState(p_218994_).is(FluidTags.WATER)) && p_218992_.getFluidState(p_218994_.below()).is(FluidTags.WATER));
     }
 
     public void baseTick() {
@@ -91,7 +88,16 @@ public class AquaNillo extends Nillo {
         if (!this.isNoAi()) {
             this.handleAirSupply(i);
         }
+        if (this.level().isClientSide()) {
+            this.tickAnimations();
+        }
+    }
 
+    private void tickAnimations() {
+        this.inWaterAnimator.tick(this.isInWater());
+        this.onGroundAnimator.tick(this.onGround());
+        boolean flag = this.walkAnimation.isMoving() || this.getXRot() != this.xRotO || this.getYRot() != this.yRotO;
+        this.movingAnimator.tick(flag);
     }
 
     protected void handleAirSupply(int p_149194_) {
@@ -140,7 +146,7 @@ public class AquaNillo extends Nillo {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        AquaNillo nillo = ModEntities.AQUA_NILLO.get().create(p_146743_);
+        AquaNillo nillo = ModEntities.AQUA_NILLO.get().create(p_146743_, EntitySpawnReason.BREEDING);
         if (nillo != null) {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {

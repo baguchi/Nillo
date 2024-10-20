@@ -29,7 +29,7 @@ public class AmuletItem extends Item {
                 nillo.setAmuletItemStack(p_42954_.split(1));
             }
 
-            return InteractionResult.sidedSuccess(p_42955_.level().isClientSide);
+            return InteractionResult.SUCCESS;
         } else {
             return InteractionResult.PASS;
         }

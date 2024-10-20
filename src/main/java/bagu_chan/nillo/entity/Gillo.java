@@ -49,7 +49,7 @@ public class Gillo extends Nillo{
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, living -> {
+        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, (living, level) -> {
             return living.getType().is(ModTags.EntityTypes.GILLO_HUNT_TARGETS);
         }));
     }
@@ -108,7 +108,8 @@ public class Gillo extends Nillo{
     }
 
 
-    protected void customServerAiStep() {
+    @Override
+    protected void customServerAiStep(ServerLevel serverLevel) {
         AttributeInstance attributeinstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
         if (this.isAggressive()) {
             if (!attributeinstance.hasModifier(SPEED_MODIFIER_ATTACKING_UUID)) {
@@ -118,17 +119,17 @@ public class Gillo extends Nillo{
             attributeinstance.removeModifier(SPEED_MODIFIER_ATTACKING);
         }
 
-        super.customServerAiStep();
+        super.customServerAiStep(serverLevel);
     }
 
     public static AttributeSupplier.Builder createAttributeMap() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.23F).add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.ATTACK_DAMAGE, 7.0F).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F);
+        return TamableAnimal.createAnimalAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.23F).add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.FOLLOW_RANGE, 20.0D).add(Attributes.ATTACK_DAMAGE, 7.0F).add(Attributes.KNOCKBACK_RESISTANCE, 0.5F);
     }
 
     @Override
     @Nullable
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        Nillo nillo = ModEntities.NILLO.get().create(p_146743_);
+        Nillo nillo = ModEntities.NILLO.get().create(p_146743_, EntitySpawnReason.BREEDING);
         if (nillo != null) {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {

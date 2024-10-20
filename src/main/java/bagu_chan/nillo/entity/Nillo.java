@@ -1,13 +1,14 @@
 package bagu_chan.nillo.entity;
 
-import bagu_chan.bagus_lib.entity.goal.AnimateAttackGoal;
 import bagu_chan.nillo.entity.goal.NilloTargetGoal;
 import bagu_chan.nillo.item.AmuletItem;
 import bagu_chan.nillo.item.NilloArmorItem;
 import bagu_chan.nillo.register.ModEntities;
 import bagu_chan.nillo.register.ModItems;
 import bagu_chan.nillo.register.ModTags;
+import baguchi.bagus_lib.entity.goal.AnimateAttackGoal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -39,12 +40,13 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.equipment.ArmorMaterials;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -71,7 +73,7 @@ public class Nillo extends TamableAnimal {
     }
 
     public static AttributeSupplier.Builder createAttributeMap() {
-        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.3F).add(Attributes.ATTACK_KNOCKBACK).add(Attributes.KNOCKBACK_RESISTANCE).add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.FOLLOW_RANGE, 18.0D).add(Attributes.ATTACK_DAMAGE, 3.0F);
+        return TamableAnimal.createAnimalAttributes().add(Attributes.MOVEMENT_SPEED, (double) 0.3F).add(Attributes.ATTACK_KNOCKBACK).add(Attributes.KNOCKBACK_RESISTANCE).add(Attributes.MAX_HEALTH, 12.0D).add(Attributes.FOLLOW_RANGE, 18.0D).add(Attributes.ATTACK_DAMAGE, 3.0F);
     }
 
     @Override
@@ -129,7 +131,7 @@ public class Nillo extends TamableAnimal {
     }
 
     @Override
-    public boolean doHurtTarget(Entity p_21372_) {
+    public boolean doHurtTarget(ServerLevel serverLevel, Entity p_21372_) {
         if (p_21372_ instanceof LivingEntity living) {
             if (this.getAmuletItemStack().is(ModItems.AQUA_AMULET.get())) {
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200));
@@ -137,7 +139,7 @@ public class Nillo extends TamableAnimal {
                 living.setRemainingFireTicks(living.getRemainingFireTicks() + 100);
             }
         }
-        return super.doHurtTarget(p_21372_);
+        return super.doHurtTarget(serverLevel, p_21372_);
     }
 
     @Override
@@ -153,10 +155,6 @@ public class Nillo extends TamableAnimal {
         return super.calculateFallDamage(p_21237_, p_21238_);
     }
 
-    @Override
-    public boolean hurt(DamageSource p_27567_, float p_27568_) {
-        return super.hurt(p_27567_, p_27568_);
-    }
 
     @Override
     public boolean canDrownInFluidType(FluidType type) {
@@ -201,12 +199,12 @@ public class Nillo extends TamableAnimal {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, living -> {
+        this.targetSelector.addGoal(4, new NilloTargetGoal<>(this, Mob.class, true, (living, level) -> {
             return living.getType().is(ModTags.EntityTypes.NILLO_HUNT_TARGETS);
         }));
     }
 
-    public static boolean checkNilloSpawnRules(EntityType<? extends Animal> p_218105_, LevelAccessor p_218106_, MobSpawnType p_218107_, BlockPos p_218108_, RandomSource p_218109_) {
+    public static boolean checkNilloSpawnRules(EntityType<? extends Animal> p_218105_, LevelAccessor p_218106_, EntitySpawnReason p_218107_, BlockPos p_218108_, RandomSource p_218109_) {
         return (p_218106_.getBlockState(p_218108_.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) || p_218106_.getBlockState(p_218108_.below()).is(Tags.Blocks.SANDS)) && isBrightEnoughToSpawn(p_218106_, p_218108_);
     }
 
@@ -222,7 +220,7 @@ public class Nillo extends TamableAnimal {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        Nillo nillo = ModEntities.NILLO.get().create(p_146743_);
+        Nillo nillo = ModEntities.NILLO.get().create(p_146743_, EntitySpawnReason.BREEDING);
         if (nillo != null) {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {
@@ -234,8 +232,8 @@ public class Nillo extends TamableAnimal {
     }
 
     @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
+    protected void customServerAiStep(ServerLevel serverLevel) {
+        super.customServerAiStep(serverLevel);
         if(this.hungerCooldown > 0){
             this.setHungerCooldown(this.getHungerCooldown() - 1);
         }
@@ -264,6 +262,7 @@ public class Nillo extends TamableAnimal {
         }
     }
 
+    @Override
     public InteractionResult mobInteract(Player p_30412_, InteractionHand p_30413_) {
         ItemStack itemstack = p_30412_.getItemInHand(p_30413_);
         if (itemstack.getItem() instanceof AmuletItem) {
@@ -273,11 +272,13 @@ public class Nillo extends TamableAnimal {
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else if (this.isTame()) {
             if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                this.heal((float) itemstack.getFoodProperties(this).nutrition());
+                FoodProperties foodproperties = itemstack.get(DataComponents.FOOD);
+                float f = foodproperties != null ? (float) foodproperties.nutrition() : 1.0F;
+                this.heal(f);
                 if (!p_30412_.getAbilities().instabuild) {
                     itemstack.shrink(1);
                 }
-                this.playSound(SoundEvents.GENERIC_EAT);
+                this.playSound(SoundEvents.GENERIC_EAT.value());
 
                 this.gameEvent(GameEvent.EAT, this);
                 return InteractionResult.SUCCESS;
@@ -294,9 +295,11 @@ public class Nillo extends TamableAnimal {
                     this.playSound(SoundEvents.ARMOR_UNEQUIP_WOLF);
                     ItemStack itemstack1 = this.getBodyArmorItem();
                     this.setBodyArmorItem(ItemStack.EMPTY);
-                    this.spawnAtLocation(itemstack1);
+                    if (this.level() instanceof ServerLevel serverLevel) {
+                        this.spawnAtLocation(serverLevel, itemstack1);
+                    }
                     return InteractionResult.SUCCESS;
-                } else if (this.getBodyArmorItem().is(ModItems.ARMADILLO_NILLO_ARMOR.get()) && ArmorMaterials.ARMADILLO.value().repairIngredient().get().test(itemstack)
+                } else if (this.getBodyArmorItem().is(ModItems.ARMADILLO_NILLO_ARMOR.get()) && itemstack.is(ArmorMaterials.ARMADILLO_SCUTE.repairIngredient())
                         && this.isInSittingPose()
                         && this.hasArmor()
                         && this.isOwnedBy(p_30412_)
@@ -319,7 +322,7 @@ public class Nillo extends TamableAnimal {
                         this.jumping = false;
                         this.navigation.stop();
                         this.setTarget(null);
-                        return InteractionResult.SUCCESS_NO_ITEM_USED;
+                        return InteractionResult.SUCCESS;
                     } else {
                         return interactionresult;
                     }
@@ -347,9 +350,9 @@ public class Nillo extends TamableAnimal {
     }
 
     @Override
-    protected void actuallyHurt(DamageSource p_331935_, float p_330695_) {
+    protected void actuallyHurt(ServerLevel serverLevel, DamageSource p_331935_, float p_330695_) {
         if (!this.canArmorAbsorb(p_331935_)) {
-            super.actuallyHurt(p_331935_, p_330695_);
+            super.actuallyHurt(serverLevel, p_331935_, p_330695_);
         } else {
             ItemStack itemstack = this.getBodyArmorItem();
             int i = itemstack.getDamageValue();

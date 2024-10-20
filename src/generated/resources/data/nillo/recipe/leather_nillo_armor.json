@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "H": {
-      "item": "minecraft:leather_helmet"
-    },
-    "L": {
-      "item": "minecraft:leather"
-    }
+    "H": "minecraft:leather_helmet",
+    "L": "minecraft:leather"
   },
   "pattern": [
     "H",

@@ -4,5 +4,8 @@
     "#minecraft:is_forest",
     "#c:is_desert",
     "minecraft:plains"
+  ],
+  "remove": [
+    "minecraft:pale_garden"
   ]
 }
